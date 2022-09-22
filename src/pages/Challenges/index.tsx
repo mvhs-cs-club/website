@@ -228,32 +228,34 @@ const Challenges = () => {
                             <Chip size="small" variant="outlined" label={item.amount} />
                           </Grid>
                         </Grid>
-                        {editing && (
-                          <ControlWrapper>
-                            <Link to={`/challenges/${item.id}`}>
-                              <Button
-                                color="info"
-                                onClick={(e: any): void => e.stopPropagation()}
+                        <ControlWrapper>
+                          <Link to={`/challenges/${item.id}`}>
+                            <Button
+                              color="info"
+                              onClick={(e: any): void => e.stopPropagation()}
+                            >
+                              Try
+                            </Button>
+                          </Link>
+                          {admin && (
+                            <>
+                              <IconButton
+                                color="default"
+                                size="small"
+                                onClick={(e: any): void => handleEdit(e, item)}
                               >
-                                Try
-                              </Button>
-                            </Link>
-                            <IconButton
-                              color="default"
-                              size="small"
-                              onClick={(e: any): void => handleEdit(e, item)}
-                            >
-                              <Edit />
-                            </IconButton>
-                            <IconButton
-                              color="error"
-                              size="small"
-                              onClick={(e: any): Promise<void> => handleDeleteChallenge(e, item.name)}
-                            >
-                              <Close />
-                            </IconButton>
-                          </ControlWrapper>
-                        )}
+                                <Edit />
+                              </IconButton>
+                              <IconButton
+                                color="error"
+                                size="small"
+                                onClick={(e: any): Promise<void> => handleDeleteChallenge(e, item.name)}
+                              >
+                                <Close />
+                              </IconButton>
+                            </>
+                          )}
+                        </ControlWrapper>
                       </ChallengeTitle>
                     </AccordionSummary>
                     <AccordionDetails>{item.description}</AccordionDetails>
