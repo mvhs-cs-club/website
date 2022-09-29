@@ -30,7 +30,7 @@ import ExpandDown from 'keyframes/expand-down';
 import { languages, boilerplates } from 'utils/languages';
 import { v4 } from 'uuid';
 import { utils } from 'utils/style-utils';
-import extensions from 'utils/codeMirrorExtensions';
+import { extensions } from 'utils/languages';
 
 // types
 import type {

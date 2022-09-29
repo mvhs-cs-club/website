@@ -20,7 +20,7 @@ import { styled } from '@mui/material/styles';
 
 // codemirror
 import CodeMirror from '@uiw/react-codemirror';
-import extensions from 'utils/codeMirrorExtensions';
+import { extensions } from 'utils/languages';
 
 // firebase
 import {
@@ -32,8 +32,10 @@ import {
 
 // utils
 import { ChallengesContext } from 'contexts/ChallengesContext';
+import { UserContext } from 'src/contexts/UserContext';
 import axios from 'axios';
 import { getDevMode } from 'utils/dev';
+import { extDict } from 'utils/languages';
 
 // components
 import PageTitle from 'components/page-title';
@@ -47,7 +49,6 @@ import Tests from './Tests';
 
 // types
 import type { ChallengeStatus, ChallengeType, CodeType, TestRes } from 'types/challenge';
-import { UserContext } from 'src/contexts/UserContext';
 
 const ChallengeWrapper = styled('div')({
   display: 'flex',
@@ -194,7 +195,7 @@ const Challenge = () => {
       }
       const res = await axios.post(`${url}/submit`, {
         code: code[language as keyof CodeType],
-        language,
+        ext: extDict[language],
         input: challenge.testCases.inputs,
         output: challenge.testCases.outputs
       }).catch(() => {

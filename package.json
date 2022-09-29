@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@codemirror/lang-cpp": "^6.0.1",
     "@codemirror/lang-java": "^6.0.0",
     "@codemirror/lang-javascript": "^6.0.2",
+    "@codemirror/lang-python": "^6.0.2",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.10.2",
