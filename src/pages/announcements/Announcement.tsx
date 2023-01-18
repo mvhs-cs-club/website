@@ -18,6 +18,7 @@ import type { AnnouncementType } from 'src/types/announcement';
 
 // components
 import Card from 'components/card';
+import Description from 'components/description';
 
 const AnnouncementWrapper = styled('div')({
   width: '100%',
@@ -206,12 +207,7 @@ const Announcement = ({ announcement }: Props) => {
               value={newValue}
             />
           ) : (
-            announcement.content.split('\n').map((line: string, index: number, array: string[]) => (
-              <span key={`announcement-content-${index}`}>
-                {line}
-                {index < array.length - 1 && <br />}
-              </span>
-            ))
+            <Description>{announcement.content}</Description>
           )}
         </EditContainer>
       </Card>

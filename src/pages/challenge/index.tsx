@@ -33,6 +33,7 @@ import Tests from './Tests';
 
 // types
 import type { ChallengeStatus, ChallengeType, CodeType, TestRes } from 'types/challenge';
+import Description from 'src/components/description';
 
 const ChallengeWrapper = styled('div')({
   display: 'flex',
@@ -255,7 +256,9 @@ const Challenge = () => {
                   )}
                 </Menu>
               )}
-              <CardTitle>{challenge?.description}</CardTitle>
+              <CardTitle>
+                <Description>{challenge?.description || ''}</Description>
+              </CardTitle>
             </InfoWrapper>
             <Grid
               container

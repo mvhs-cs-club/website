@@ -37,6 +37,7 @@ import PageWrapper from 'components/page-wrapper';
 
 // types
 import type { ChallengeType } from 'src/types/challenge';
+import ChallengeDescription from 'src/components/description';
 
 const ChallengesWrapper = styled('div')({
   // paddingTop: 0,
@@ -247,7 +248,9 @@ const Challenges = () => {
                         </ControlWrapper>
                       </ChallengeTitle>
                     </AccordionSummary>
-                    <AccordionDetails>{item.description}</AccordionDetails>
+                    <AccordionDetails>
+                      <ChallengeDescription>{item.description}</ChallengeDescription>
+                    </AccordionDetails>
                   </Accordion>
                 )
               )}
