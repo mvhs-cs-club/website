@@ -2,10 +2,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 // mui
-import {
-  CircularProgress,
-  useTheme
-} from '@mui/material';
+import { CircularProgress, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
@@ -121,7 +118,10 @@ const Leaderboard = () => {
       <LeaderboardWrapper>
         <PageTitle>Leaderboard</PageTitle>
         <FadeIn>
-          <Card sx={leaderboardSx} onScroll={handleScroll}>
+          <Card
+            sx={leaderboardSx}
+            onScroll={handleScroll}
+          >
             <LeaderboardHeader
               sx={{
                 background: theme.palette.background.default,
@@ -137,7 +137,10 @@ const Leaderboard = () => {
                   <LeaderboardContent>
                     {leaderboard.length > 0 &&
                       leaderboard
-                        .sort((a: UserType, b: UserType) => getPointsFromHistory(b.history) - getPointsFromHistory(a.history))
+                        .sort(
+                          (a: UserType, b: UserType) =>
+                            getPointsFromHistory(b.history) - getPointsFromHistory(a.history)
+                        )
                         .map((data: UserType, i: number) => (
                           <LeaderboardItem key={`leaderbaord-item-${i}`}>
                             {i === 0 ? (

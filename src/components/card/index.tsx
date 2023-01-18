@@ -45,9 +45,9 @@ const Card = ({ children, sx, stretch = false, className, onClick, onScroll }: P
         ...sx,
         ...(stretch
           ? {
-            width: '100% !important',
-            flex: '1 1 auto'
-          }
+              width: '100% !important',
+              flex: '1 1 auto'
+            }
           : {})
       }}
       onClick={(e: any) => handleClick(e)}

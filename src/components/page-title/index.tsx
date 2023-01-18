@@ -1,5 +1,5 @@
 // mui
-import { Typography } from "@mui/material";
+import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const Title = styled(Typography)(({ theme }) => ({
@@ -30,12 +30,22 @@ const PageTitle = ({ children, size, sx, length }: PageTitlePropsType) => {
   }
   sx = {
     ...sx,
-    transition: `${newLength}, 0.15s color`,
+    transition: `${newLength}, 0.15s color`
   };
-  return (
-    (size === 'large' || !size)
-      ? <Title variant="h1" sx={sx}>{children}</Title>
-      : <Title variant="h2" sx={sx}>{children}</Title>
+  return size === 'large' || !size ? (
+    <Title
+      variant="h1"
+      sx={sx}
+    >
+      {children}
+    </Title>
+  ) : (
+    <Title
+      variant="h2"
+      sx={sx}
+    >
+      {children}
+    </Title>
   );
 };
 

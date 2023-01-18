@@ -92,7 +92,7 @@ const Announcements = () => {
     setContractNewAnnouncement(false);
   };
 
-  const NewAnnoucementEl = (): React.ReactElement => {
+  const NewAnnouncementEl = (): React.ReactElement => {
     return (
       <Box
         sx={{
@@ -120,13 +120,13 @@ const Announcements = () => {
             length={0.4}
           >
             <ExpandUp callback={handleNewAnnouncementCallback}>
-              <NewAnnoucementEl />
+              <NewAnnouncementEl />
             </ExpandUp>
           </FadeOut>
         ) : (
           <FadeIn sx={fullWidthSx}>
             <ExpandDown>
-              <NewAnnoucementEl />
+              <NewAnnouncementEl />
             </ExpandDown>
           </FadeIn>
         ))}

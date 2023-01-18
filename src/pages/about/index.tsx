@@ -33,9 +33,7 @@ const SocialLink = ({ children, to }: SocialLinkProps) => {
   return (
     <a href={to}>
       <FadeIn>
-        <SocialWrapper>
-          {children}
-        </SocialWrapper>
+        <SocialWrapper>{children}</SocialWrapper>
       </FadeIn>
     </a>
   );
@@ -54,10 +52,17 @@ const About = () => {
   return (
     <PageWrapper>
       <PageTitle>About</PageTitle>
-      <P>The MVHS CS Club is a student-run organization that aims to provide a welcoming environment for students to learn and develop their skills in computer science.</P>
+      <P>
+        The MVHS CS Club is a student-run organization that aims to provide a welcoming environment for
+        students to learn and develop their skills in computer science.
+      </P>
       <P>We host events throughout the school year such as hackathons, app competitions, and more.</P>
       <SocialLink to={discordLink}>
-        <Img src={discordIcon} sx={imgSx} refer-policy="noreferrer" />
+        <Img
+          src={discordIcon}
+          sx={imgSx}
+          refer-policy="noreferrer"
+        />
       </SocialLink>
     </PageWrapper>
   );

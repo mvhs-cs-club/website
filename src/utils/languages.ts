@@ -2,11 +2,7 @@ import { java } from '@codemirror/lang-java';
 import { cpp } from '@codemirror/lang-cpp';
 import { python } from '@codemirror/lang-python';
 
-export const languages = [
-  'java',
-  'C++',
-  'python'
-];
+export const languages = ['java', 'C++', 'python'];
 
 export const boilerplates: any = {
   java: `public class Runner {\n  public static void main(String[] args) {\n    \n  }\n}\n`,

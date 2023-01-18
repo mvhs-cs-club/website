@@ -52,7 +52,10 @@ const ExpandDown = ({ children, length, sx, wrapperSx }: ExpandDownProps) => {
 
   return (
     <div style={localWrapperSx}>
-      <div style={sx} ref={wrapperRef}>
+      <div
+        style={sx}
+        ref={wrapperRef}
+      >
         {children}
       </div>
     </div>

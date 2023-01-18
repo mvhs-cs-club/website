@@ -14,11 +14,7 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import {
-  Add,
-  Close,
-  Edit
-} from '@mui/icons-material';
+import { Add, Close, Edit } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
 // firebase
@@ -40,9 +36,7 @@ import NewChallenge from './NewChallenge';
 import PageWrapper from 'components/page-wrapper';
 
 // types
-import type {
-  ChallengeType,
-} from 'src/types/challenge';
+import type { ChallengeType } from 'src/types/challenge';
 
 const ChallengesWrapper = styled('div')({
   // paddingTop: 0,
@@ -148,18 +142,12 @@ const Challenges = () => {
     };
 
     return (
-      <Box
-        sx={newChallengeSx}
-      >
+      <Box sx={newChallengeSx}>
         <NewChallenge
           onCancel={handleCancelAddingChallenge}
           onCreate={handleCreateChallenge}
           defaults={
-            editing
-              ? challengeToEdit !== null
-                ? challengeToEdit
-                : challengeDefaults
-              : challengeDefaults
+            editing ? (challengeToEdit !== null ? challengeToEdit : challengeDefaults) : challengeDefaults
           }
         />
       </Box>
@@ -173,34 +161,31 @@ const Challenges = () => {
       }}
     >
       <ChallengesWrapper>
-        {(addingChallenge || editing) && (
-          contractNewChallenge
-            ? (
-              <FadeOut sx={fullWidthSx} length={0.4}>
-                <ExpandUp
-                  callback={handleNewChallengeCallback}
-                >
-                  <NewChallengeEl />
-                </ExpandUp>
-              </FadeOut>
-            )
-            : (
-              <FadeIn sx={fullWidthSx}>
-                <ExpandDown>
-                  <NewChallengeEl />
-                </ExpandDown>
-              </FadeIn>
-            )
-        )}
+        {(addingChallenge || editing) &&
+          (contractNewChallenge ? (
+            <FadeOut
+              sx={fullWidthSx}
+              length={0.4}
+            >
+              <ExpandUp callback={handleNewChallengeCallback}>
+                <NewChallengeEl />
+              </ExpandUp>
+            </FadeOut>
+          ) : (
+            <FadeIn sx={fullWidthSx}>
+              <ExpandDown>
+                <NewChallengeEl />
+              </ExpandDown>
+            </FadeIn>
+          ))}
         <PageTitle sx={{ marginTop: contractNewChallenge ? 4 : 0 }}>
           {challenges === null
-            ? "Loading..."
+            ? 'Loading...'
             : challenges.length > 0
-              ? "Challenges"
-              : "No challenges right now, sorry!"
-          }
+            ? 'Challenges'
+            : 'No challenges right now, sorry!'}
         </PageTitle>
-        {(challenges && challenges.length > 0) && (
+        {challenges && challenges.length > 0 && (
           <FadeIn length={0.4}>
             <ContentWrapper>
               {challenges.map(
@@ -225,7 +210,11 @@ const Challenges = () => {
                             <span>{item.name}</span>
                           </Grid>
                           <Grid item>
-                            <Chip size="small" variant="outlined" label={item.amount} />
+                            <Chip
+                              size="small"
+                              variant="outlined"
+                              label={item.amount}
+                            />
                           </Grid>
                         </Grid>
                         <ControlWrapper>
@@ -266,7 +255,11 @@ const Challenges = () => {
           </FadeIn>
         )}
         {admin && (
-          <Fab color="primary" sx={fabSx} onClick={handleAddingChallenge}>
+          <Fab
+            color="primary"
+            sx={fabSx}
+            onClick={handleAddingChallenge}
+          >
             <Add />
           </Fab>
         )}

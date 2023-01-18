@@ -50,7 +50,6 @@ import AuthGuard from 'components/auth-guard';
 import { UsersContext } from 'src/contexts/UserContext';
 import { AttendanceRequestContext } from 'src/contexts/AttendanceContext';
 import { AttendanceMap } from 'src/types/attendance';
-import { Stack } from '@mui/system';
 
 const AdminContent = styled('div')(({ theme }) => ({
   display: 'flex',

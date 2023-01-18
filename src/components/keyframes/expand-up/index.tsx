@@ -45,7 +45,10 @@ const ExpandUp = ({ children, length, callback, sx, wrapperSx }: Props) => {
 
   return (
     <div style={{ ...localWrapperSx, height }}>
-      <div style={sx} ref={wrapperRef}>
+      <div
+        style={sx}
+        ref={wrapperRef}
+      >
         {children}
       </div>
     </div>

@@ -12,7 +12,14 @@ const defaultProps = {
 type ImgPropsType = ImgProps & typeof defaultProps;
 
 const Img = ({ src, sx, alt }: ImgPropsType) => {
-  return <img src={src} style={sx} alt={alt} referrer-policy="noreferrer" />;
+  return (
+    <img
+      src={src}
+      style={sx}
+      alt={alt}
+      referrer-policy="noreferrer"
+    />
+  );
 };
 
 Img.defaultProps = defaultProps;

@@ -66,7 +66,12 @@ const Alert = ({ children, onClose, absolute, position, color }: AlertPropsType)
         variant="standard"
         color={color}
         action={
-          <IconButton aria-label="close" color="inherit" size="small" onClick={handleClose}>
+          <IconButton
+            aria-label="close"
+            color="inherit"
+            size="small"
+            onClick={handleClose}
+          >
             <Close fontSize="inherit" />
           </IconButton>
         }

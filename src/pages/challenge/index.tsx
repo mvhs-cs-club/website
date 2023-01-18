@@ -3,19 +3,8 @@ import { useState, useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // mui
-import {
-  Breadcrumbs,
-  Link,
-  Typography,
-  Button,
-  Menu,
-  MenuItem,
-  Grid,
-  useTheme
-} from '@mui/material';
-import {
-  LoadingButton
-} from '@mui/lab';
+import { Breadcrumbs, Link, Typography, Button, Menu, MenuItem, Grid, useTheme } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { styled } from '@mui/material/styles';
 
 // codemirror
@@ -23,12 +12,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { extensions } from 'utils/languages';
 
 // firebase
-import {
-  addPoints,
-  getChallengeData,
-  updateChallengeStatus,
-  updateChallengeCode
-} from 'utils/firebase';
+import { addPoints, getChallengeData, updateChallengeStatus, updateChallengeCode } from 'utils/firebase';
 
 // utils
 import { ChallengesContext } from 'contexts/ChallengesContext';
@@ -128,7 +112,7 @@ const Challenge = () => {
         if (tempChallenge !== null && challengeData !== null) {
           const completed = challengeData.status === 'complete';
           setChallengeCompleted(completed);
-          setChallenge(tempChallenge)
+          setChallenge(tempChallenge);
           const lang: string = tempChallenge.languages[0];
           if (challengeData.code[lang as keyof CodeType] === '') {
             handleSetCode(tempChallenge.boilerplate[lang], lang);
@@ -189,20 +173,24 @@ const Challenge = () => {
     if (challenge !== null) {
       let url;
       if (devMode) {
-        url = `http://localhost:${devPort}`
+        url = `http://localhost:${devPort}`;
       } else {
         url = 'https://mvcs-club-api.onrender.com';
       }
-      const res = await axios.post(`${url}/submit`, {
-        code: code[language as keyof CodeType],
-        ext: extDict[language],
-        input: challenge.testCases.inputs,
-        output: challenge.testCases.outputs
-      }).catch(() => {
-        if (devMode) {
-          console.warn(`Unable to reach server. Check that local server is running on http://localhost:${devMode}`)
-        }
-      });
+      const res = await axios
+        .post(`${url}/submit`, {
+          code: code[language as keyof CodeType],
+          ext: extDict[language],
+          input: challenge.testCases.inputs,
+          output: challenge.testCases.outputs
+        })
+        .catch(() => {
+          if (devMode) {
+            console.warn(
+              `Unable to reach server. Check that local server is running on http://localhost:${devMode}`
+            );
+          }
+        });
       setAwaiting(false);
       setContractTests(false);
       if (res) {
@@ -218,124 +206,144 @@ const Challenge = () => {
         }
       }
     } else {
-      console.warn("Challenge is null");
+      console.warn('Challenge is null');
     }
   };
 
   return (
     <PageWrapper>
       <ChallengeWrapper>
-        {challenges !== null
-          ? (
-            <FadeIn>
-              <InfoWrapper>
-                <Breadcrumbs>
-                  <Link href="/challenges" underline="hover" color="inherit">
-                    Challenges
-                  </Link>
-                  <Typography>{challenge?.name}</Typography>
-                </Breadcrumbs>
-                <PageTitle>{challenge?.name}</PageTitle>
-                {language !== '' && (
-                  <Button
-                    size="small"
-                    color="primary"
-                    variant="outlined"
-                    onClick={handleLanguageMenuOpen}
-                  >
-                    {language}
-                  </Button>
-                )}
-                {challenge?.languages && (
-                  <Menu
-                    anchorEl={languageMenuAnchorEl}
-                    open={languageMenuOpen}
-                    onClose={handleLanguageMenuClose}
-                  >
-                    {challenge.languages.map(
-                      (language: string, index: number): React.ReactNode => (
-                        <MenuItem
-                          key={`${index}-language-menu-item`}
-                          onClick={() => handleSetLanguage(language)}
-                        >
-                          {language}
-                        </MenuItem>
-                      )
-                    )}
-                  </Menu>
-                )}
-                <CardTitle>{challenge?.description}</CardTitle>
-              </InfoWrapper>
-              <Grid container spacing={1.5}>
-                <Grid item xs={12}>
-                  {(!switching && language !== '') && (
-                    <ExpandDown>
-                      <CodeMirror
-                        height="300px"
-                        width="100%"
-                        theme={theme.palette.mode}
-                        style={editorSx}
-                        value={code[language as keyof CodeType]}
-                        extensions={extensions[language]}
-                        onChange={!challengeCompleted ? (value: string): void => handleSetCode(value, language) : () => { }}
-                      />
-                      <Typography
-                        variant="caption"
-                        color="GrayText"
+        {challenges !== null ? (
+          <FadeIn>
+            <InfoWrapper>
+              <Breadcrumbs>
+                <Link
+                  href="/challenges"
+                  underline="hover"
+                  color="inherit"
+                >
+                  Challenges
+                </Link>
+                <Typography>{challenge?.name}</Typography>
+              </Breadcrumbs>
+              <PageTitle>{challenge?.name}</PageTitle>
+              {language !== '' && (
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  onClick={handleLanguageMenuOpen}
+                >
+                  {language}
+                </Button>
+              )}
+              {challenge?.languages && (
+                <Menu
+                  anchorEl={languageMenuAnchorEl}
+                  open={languageMenuOpen}
+                  onClose={handleLanguageMenuClose}
+                >
+                  {challenge.languages.map(
+                    (language: string, index: number): React.ReactNode => (
+                      <MenuItem
+                        key={`${index}-language-menu-item`}
+                        onClick={() => handleSetLanguage(language)}
                       >
-                        Saved After Submit
-                      </Typography>
-                    </ExpandDown>
+                        {language}
+                      </MenuItem>
+                    )
                   )}
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={1}>
-                    <Grid item>
-                      <LoadingButton
-                        color="primary"
-                        onClick={handleSubmitCode}
-                        variant="contained"
-                        loading={awaiting}
-                        disabled={challengeCompleted}
-                      >
-                        {challengeCompleted ? 'Completed' : 'Submit'}
-                      </LoadingButton>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        onClick={handleSaveCode}
-                      >Save</Button>
-                    </Grid>
+                </Menu>
+              )}
+              <CardTitle>{challenge?.description}</CardTitle>
+            </InfoWrapper>
+            <Grid
+              container
+              spacing={1.5}
+            >
+              <Grid
+                item
+                xs={12}
+              >
+                {!switching && language !== '' && (
+                  <ExpandDown>
+                    <CodeMirror
+                      height="300px"
+                      width="100%"
+                      theme={theme.palette.mode}
+                      style={editorSx}
+                      value={code[language as keyof CodeType]}
+                      extensions={extensions[language]}
+                      onChange={
+                        !challengeCompleted
+                          ? (value: string): void => handleSetCode(value, language)
+                          : () => {}
+                      }
+                    />
+                    <Typography
+                      variant="caption"
+                      color="GrayText"
+                    >
+                      Saved After Submit
+                    </Typography>
+                  </ExpandDown>
+                )}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+              >
+                <Grid
+                  container
+                  spacing={1}
+                >
+                  <Grid item>
+                    <LoadingButton
+                      color="primary"
+                      onClick={handleSubmitCode}
+                      variant="contained"
+                      loading={awaiting}
+                      disabled={challengeCompleted}
+                    >
+                      {challengeCompleted ? 'Completed' : 'Submit'}
+                    </LoadingButton>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      onClick={handleSaveCode}
+                    >
+                      Save
+                    </Button>
                   </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  {ranTests.length > 0 && (
-                    contractTests
-                      ? (
-                        <FadeOut>
-                          <ExpandUp
-                            callback={handleExpandTestsCallback}
-                          >
-                            <Tests tests={ranTests} />
-                          </ExpandUp>
-                        </FadeOut>
-                      )
-                      : (
-                        <FadeIn>
-                          <ExpandDown>
-                            <Tests tests={ranTests} />
-                          </ExpandDown>
-                        </FadeIn>
-                      )
-                  )}
-                </Grid>
               </Grid>
-            </FadeIn>
-          ) : <PageTitle size="large">Loading...</PageTitle>
-        }
-      </ChallengeWrapper >
+              <Grid
+                item
+                xs={12}
+              >
+                {ranTests.length > 0 &&
+                  (contractTests ? (
+                    <FadeOut>
+                      <ExpandUp callback={handleExpandTestsCallback}>
+                        <Tests tests={ranTests} />
+                      </ExpandUp>
+                    </FadeOut>
+                  ) : (
+                    <FadeIn>
+                      <ExpandDown>
+                        <Tests tests={ranTests} />
+                      </ExpandDown>
+                    </FadeIn>
+                  ))}
+              </Grid>
+            </Grid>
+          </FadeIn>
+        ) : (
+          <PageTitle size="large">Loading...</PageTitle>
+        )}
+      </ChallengeWrapper>
     </PageWrapper>
   );
 };

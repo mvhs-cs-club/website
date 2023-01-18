@@ -66,7 +66,10 @@ const ProfileBox = ({ user, children }: Props) => {
             referrerPolicy="no-referrer"
           />
           <ProfileText>
-            <Typography variant="body2" sx={{ fontWeight: 400 }}>
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 400 }}
+            >
               {user.name}
             </Typography>
             <Sub>

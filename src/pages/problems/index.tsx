@@ -3,18 +3,8 @@ import { useState, useContext } from 'react';
 
 // mui
 import { styled } from '@mui/material/styles';
-import {
-  Accordion,
-  AccordionSummary,
-  IconButton,
-  AccordionDetails,
-  Grid,
-  useTheme
-} from '@mui/material';
-import {
-  Close,
-  Check
-} from '@mui/icons-material';
+import { Accordion, AccordionSummary, IconButton, AccordionDetails, Grid, useTheme } from '@mui/material';
+import { Close, Check } from '@mui/icons-material';
 
 // firebase
 import { deleteProblem } from 'utils/firebase';
@@ -30,7 +20,7 @@ import CardTitle from 'components/card-title';
 import PageWrapper from 'components/page-wrapper';
 import AuthGuard from 'components/auth-guard';
 
-// types 
+// types
 import type { ProblemType } from 'src/types/problem';
 
 const ProblemWrapper = styled('div')({
@@ -40,7 +30,7 @@ const ProblemWrapper = styled('div')({
 });
 
 const ContentWrapper = styled('div')({
-  width: '100%',
+  width: '100%'
 });
 
 const ProblemTitle = styled('div')({
@@ -70,61 +60,61 @@ const Problems = () => {
     <AuthGuard>
       <PageWrapper>
         <ProblemWrapper>
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+          >
             <Grid item>
-              <PageTitle>
-                Problems
-              </PageTitle>
+              <PageTitle>Problems</PageTitle>
             </Grid>
             {problems !== null && (
-              <Grid item xs={12}>
-                {problems.length === 0
-                  ? (
-                    <CardTitle size="large">
-                      Woohoo! No problems at the moment.
-                    </CardTitle>
-                  )
-                  : (
-                    <FadeIn length={0.4}>
-                      <ContentWrapper>
-                        {problems.map(
-                          (item: ProblemType, index: number): React.ReactNode => (
-                            <Accordion
-                              sx={{
-                                background: theme.palette.background.default
-                              }}
-                              key={`${index}-challenge-list`}
-                            >
-                              <AccordionSummary>
-                                <ProblemTitle>
-                                  <span>{item.title}</span>
-                                  {admin && (
-                                    <ControlWrapper>
-                                      <IconButton
-                                        color="error"
-                                        size="small"
-                                        onClick={(e: any) => handleDeleteProblem(e, item.title)}
-                                      >
-                                        <Close />
-                                      </IconButton>
-                                      <IconButton
-                                        color="primary"
-                                        size="small"
-                                        onClick={(e: any) => handleDeleteProblem(e, item.title)}
-                                      >
-                                        <Check />
-                                      </IconButton>
-                                    </ControlWrapper>
-                                  )}
-                                </ProblemTitle>
-                              </AccordionSummary>
-                              <AccordionDetails>{item.description}</AccordionDetails>
-                            </Accordion>
-                          )
-                        )}
-                      </ContentWrapper>
-                    </FadeIn>
-                  )}
+              <Grid
+                item
+                xs={12}
+              >
+                {problems.length === 0 ? (
+                  <CardTitle size="large">Woohoo! No problems at the moment.</CardTitle>
+                ) : (
+                  <FadeIn length={0.4}>
+                    <ContentWrapper>
+                      {problems.map(
+                        (item: ProblemType, index: number): React.ReactNode => (
+                          <Accordion
+                            sx={{
+                              background: theme.palette.background.default
+                            }}
+                            key={`${index}-challenge-list`}
+                          >
+                            <AccordionSummary>
+                              <ProblemTitle>
+                                <span>{item.title}</span>
+                                {admin && (
+                                  <ControlWrapper>
+                                    <IconButton
+                                      color="error"
+                                      size="small"
+                                      onClick={(e: any) => handleDeleteProblem(e, item.title)}
+                                    >
+                                      <Close />
+                                    </IconButton>
+                                    <IconButton
+                                      color="primary"
+                                      size="small"
+                                      onClick={(e: any) => handleDeleteProblem(e, item.title)}
+                                    >
+                                      <Check />
+                                    </IconButton>
+                                  </ControlWrapper>
+                                )}
+                              </ProblemTitle>
+                            </AccordionSummary>
+                            <AccordionDetails>{item.description}</AccordionDetails>
+                          </Accordion>
+                        )
+                      )}
+                    </ContentWrapper>
+                  </FadeIn>
+                )}
               </Grid>
             )}
           </Grid>

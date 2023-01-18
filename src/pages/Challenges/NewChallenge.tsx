@@ -33,11 +33,8 @@ import { utils } from 'utils/style-utils';
 import { extensions } from 'utils/languages';
 
 // types
-import type {
-  ChallengeType,
-  BoilerplateType,
-} from 'types/challenge';
-import type { ErrorRuleType } from 'types/utils'
+import type { ChallengeType, BoilerplateType } from 'types/challenge';
+import type { ErrorRuleType } from 'types/utils';
 
 const InputWrapper = styled('div')({
   display: 'flex',
@@ -85,7 +82,6 @@ interface Props {
 }
 
 const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
-
   const [name, setName] = useState<string>(defaults.name);
   const [desc, setDesc] = useState<string>(defaults.description);
   const [language, setLanguage] = useState<string>('');
@@ -107,10 +103,7 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
   };
 
   const validTestCases = (): boolean => {
-    return (
-      inputs !== '' &&
-      outputs !== ''
-    );
+    return inputs !== '' && outputs !== '';
   };
 
   const validRules: ErrorRuleType[] = [
@@ -247,7 +240,10 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
 
   useEffect(() => {
     if (!switching) {
-      if (!boilerplate[language as keyof BoilerplateType] || boilerplate[language as keyof BoilerplateType] === '') {
+      if (
+        !boilerplate[language as keyof BoilerplateType] ||
+        boilerplate[language as keyof BoilerplateType] === ''
+      ) {
         updateBoilerplate(boilerplates[language]);
       }
     }
@@ -266,7 +262,12 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
     return showingAlerts ? (
       <AbsoluteAlerts>
         {errors.map((error: string, index: number) => (
-          <Alert key={`error-alert-${index}`} onClose={() => { }} color="error" absolute={false}>
+          <Alert
+            key={`error-alert-${index}`}
+            onClose={() => {}}
+            color="error"
+            absolute={false}
+          >
             {error}
           </Alert>
         ))}
@@ -285,7 +286,9 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
             marginBottom: 2
           }}
           size="small"
-        >Create New Challenge</PageTitle>
+        >
+          Create New Challenge
+        </PageTitle>
         <InputWrapper>
           <TextField
             label="Name"
@@ -336,10 +339,7 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
               variant="outlined"
               onClick={handleLanguageMenuOpen}
             >
-              {selectedLanguages.length === 0 || language.length === 0
-                ? 'No Language Selected'
-                : language
-              }
+              {selectedLanguages.length === 0 || language.length === 0 ? 'No Language Selected' : language}
             </Button>
           </JustifyLeft>
           <Menu
@@ -347,15 +347,17 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
             open={languageMenuOpen}
             onClose={handleLanguageMenuClose}
           >
-            {selectedLanguages.map((language: string, index: number): React.ReactNode => (
-              <MenuItem
-                key={`${index}-language-menu-item`}
-                onClick={() => handleSetLanguage(language)}
-              >
-                {`${language.substring(0, 1).toUpperCase()}${language.substring(1)}`}
-              </MenuItem>
-            ))}
-            {(selectedLanguages.length === 0) && (
+            {selectedLanguages.map(
+              (language: string, index: number): React.ReactNode => (
+                <MenuItem
+                  key={`${index}-language-menu-item`}
+                  onClick={() => handleSetLanguage(language)}
+                >
+                  {`${language.substring(0, 1).toUpperCase()}${language.substring(1)}`}
+                </MenuItem>
+              )
+            )}
+            {selectedLanguages.length === 0 && (
               <Typography
                 sx={{
                   marginRight: 1,
@@ -366,7 +368,7 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
               </Typography>
             )}
           </Menu>
-          {(!switching && language !== '') && (
+          {!switching && language !== '' && (
             <ExpandDown>
               <CodeMirror
                 height="325px"
@@ -380,10 +382,16 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
               />
             </ExpandDown>
           )}
-          {(!switching && language !== '') && (
+          {!switching && language !== '' && (
             <ExpandDown>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
+              <Grid
+                container
+                spacing={2}
+              >
+                <Grid
+                  item
+                  xs={6}
+                >
                   <TextField
                     label="Inputs"
                     placeholder="Seperated by space or surrounded by double quotes. Each input on a seperate line."
@@ -395,7 +403,10 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
                     onChange={(e: any): void => setInputs(e.target.value)}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid
+                  item
+                  xs={6}
+                >
                   <TextField
                     label="Expected Outputs"
                     placeholder="Stand alone or surrounded by double quotes"

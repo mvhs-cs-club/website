@@ -2,27 +2,15 @@
 import { useState, useContext } from 'react';
 
 // mui
-import {
-  PaletteColor,
-  Fab,
-  Menu,
-  useTheme,
-  Switch,
-  Theme
-} from '@mui/material';
-import {
-  Settings
-} from '@mui/icons-material';
+import { PaletteColor, Fab, Menu, useTheme, Switch, Theme } from '@mui/material';
+import { Settings } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
 // img
 import MvhsLogo from 'assets/MvhsLogo';
 
 // utils
-import {
-  ThemeModeContext,
-  ColorModeContext
-} from 'theme/CustomTheme';
+import { ThemeModeContext, ColorModeContext } from 'theme/CustomTheme';
 import { utils } from 'utils/style-utils';
 
 // types
@@ -43,9 +31,13 @@ const HeaderWrapper = styled('header')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   padding: '19px 24px',
-  background: theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.primary['800' as keyof PaletteColor],
+  background:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.primary['800' as keyof PaletteColor],
   color: theme.palette.getContrastText(theme.palette.primary.main),
-  boxShadow: '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)',
+  boxShadow:
+    '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)',
   zIndex: 5,
   height: 65,
   alignItems: 'center',
@@ -63,7 +55,7 @@ const HeaderTitle = styled('p')({
   margin: 0,
   padding: 0,
   fontSize: 22,
-  fontWeight: 400,
+  fontWeight: 400
 });
 
 const CustomMenu = styled(Menu)(({ theme }) => ({
@@ -81,7 +73,7 @@ const SwatchWrapper = styled('div')(({ theme }) => ({
   borderRadius: '100%',
   borderWidth: 2,
   borderStyle: 'solid',
-  borderColor: 'transparent',
+  borderColor: 'transparent'
 }));
 
 const Swatch = styled('div')({
@@ -104,20 +96,23 @@ const Section = styled('div')(({ theme }) => ({
 
 interface GroupTitleProps {
   children: React.ReactNode;
-  theme: Theme
+  theme: Theme;
 }
 
 const GroupTitle = ({ children, theme }: GroupTitleProps) => {
   return (
     <Sub
       sx={{
-        color: theme.palette.mode === 'dark' ? theme.palette.getContrastText(theme.palette.background.default) : (theme.palette.text as any).primary
+        color:
+          theme.palette.mode === 'dark'
+            ? theme.palette.getContrastText(theme.palette.background.default)
+            : (theme.palette.text as any).primary
       }}
     >
       {children}
     </Sub>
   );
-}
+};
 
 const Header = () => {
   const theme = useTheme();

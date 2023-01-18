@@ -13,7 +13,10 @@ const Link = ({ to, color = 'black', children }: Props) => {
   };
 
   return (
-    <RouterLink to={to} style={{ color, ...linkSX }}>
+    <RouterLink
+      to={to}
+      style={{ color, ...linkSX }}
+    >
       {children}
     </RouterLink>
   );

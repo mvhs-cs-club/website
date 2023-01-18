@@ -17,6 +17,7 @@ import { User } from 'firebase/auth';
 import PageTitle from 'components/page-title';
 import PageWrapper from 'components/page-wrapper';
 import Card from 'components/card';
+import AuthGuard from 'src/components/auth-guard';
 
 const RequestAttendance = () => {
   const user = useContext(UserContext);
@@ -38,33 +39,35 @@ const RequestAttendance = () => {
   };
 
   return (
-    <PageWrapper>
-      <PageTitle>Request Attendance</PageTitle>
-      <Card
-        sx={{
-          width: '100%',
-          maxWidth: '350px',
-          height: '150px',
-          marginTop: '36px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '30px'
-        }}
-      >
-        {userLoading ? (
-          <CircularProgress />
-        ) : (
-          <Button
-            variant="outlined"
-            size="large"
-            onClick={handleRequestAttendance}
-          >
-            Request Attendance
-          </Button>
-        )}
-      </Card>
-    </PageWrapper>
+    <AuthGuard>
+      <PageWrapper>
+        <PageTitle>Request Attendance</PageTitle>
+        <Card
+          sx={{
+            width: '100%',
+            maxWidth: '350px',
+            height: '150px',
+            marginTop: '36px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '30px'
+          }}
+        >
+          {userLoading ? (
+            <CircularProgress />
+          ) : (
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={handleRequestAttendance}
+            >
+              Request Attendance
+            </Button>
+          )}
+        </Card>
+      </PageWrapper>
+    </AuthGuard>
   );
 };
 

@@ -19,10 +19,20 @@ const defaultProps = {
 type PropsType = Props & typeof defaultProps;
 
 const CardTitle = ({ children, size, sx = {} }: PropsType) => {
-  return (
-    (size === 'small' || !size)
-      ? <Title variant="h4" style={sx}>{children}</Title>
-      : <Title variant="h3" style={sx}>{children}</Title>
+  return size === 'small' || !size ? (
+    <Title
+      variant="h4"
+      style={sx}
+    >
+      {children}
+    </Title>
+  ) : (
+    <Title
+      variant="h3"
+      style={sx}
+    >
+      {children}
+    </Title>
   );
 };
 

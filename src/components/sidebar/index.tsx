@@ -17,13 +17,7 @@ import {
   Construction,
   TuneRounded
 } from '@mui/icons-material';
-import {
-  Button,
-  Fab,
-  Box,
-  useTheme,
-  Chip
-} from '@mui/material';
+import { Button, Fab, Box, useTheme, Chip } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 // firebase
@@ -105,7 +99,7 @@ const Sidebar = () => {
       path: '/leaderboard',
       name: 'Leaderboard',
       icon: <LeaderboardRounded />
-    },
+    }
   ];
   if (user != null) {
     paths.push({
@@ -153,7 +147,7 @@ const Sidebar = () => {
       path: '/actions',
       name: 'Action Panel',
       icon: <TuneRounded></TuneRounded>
-    })
+    });
   }
   paths.push({
     path: '/about',
@@ -207,13 +201,13 @@ const Sidebar = () => {
         transition: '0.25s ease-in-out',
         ...(expanded
           ? {
-            maxWidth: expandedWidth,
-            minWidth: expandedWidth,
-          }
+              maxWidth: expandedWidth,
+              minWidth: expandedWidth
+            }
           : {
-            maxWidth: contractedWidth,
-            minWidth: contractedWidth,
-          })
+              maxWidth: contractedWidth,
+              minWidth: contractedWidth
+            })
       }}
     >
       <SidebarWrapper>
@@ -236,16 +230,27 @@ const Sidebar = () => {
         <ExpandedArrowWrapper
           sx={{
             display: 'flex',
-            flexDirection: expanded ? 'row' : 'column',
+            flexDirection: expanded ? 'row' : 'column'
           }}
         >
           {user === null && !loading ? (
-            <Button className={!expanded ? 'expanded' : ''} onClick={handleSignIn} variant="contained" sx={expanded ? buttonSxExpanded : buttonSxContracted}>
+            <Button
+              className={!expanded ? 'expanded' : ''}
+              onClick={handleSignIn}
+              variant="contained"
+              sx={expanded ? buttonSxExpanded : buttonSxContracted}
+            >
               <PersonRounded />
               {expanded && <span>Sign in</span>}
             </Button>
           ) : (
-            <Button className={!expanded ? 'expanded' : ''} onClick={handleSignOut} color="error" variant="outlined" sx={expanded ? buttonSxExpanded : buttonSxContracted}>
+            <Button
+              className={!expanded ? 'expanded' : ''}
+              onClick={handleSignOut}
+              color="error"
+              variant="outlined"
+              sx={expanded ? buttonSxExpanded : buttonSxContracted}
+            >
               <LogoutRounded />
               {expanded && <span>Sign out</span>}
             </Button>
@@ -258,11 +263,13 @@ const Sidebar = () => {
             <ChevronLeft
               sx={{
                 transition: '0.15s',
-                ...(!expanded ? {
-                  transform: 'rotate(180deg)'
-                } : {
-                  transform: 'rotate(0deg)'
-                })
+                ...(!expanded
+                  ? {
+                      transform: 'rotate(180deg)'
+                    }
+                  : {
+                      transform: 'rotate(0deg)'
+                    })
               }}
             />
           </CustomFab>
