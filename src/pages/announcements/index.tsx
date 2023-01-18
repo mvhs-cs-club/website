@@ -16,7 +16,7 @@ import { v4 } from 'uuid';
 import { utils, classes } from 'utils/style-utils';
 
 // types
-import type { AnnouncementType } from 'types/announcement';
+import type { AnnouncementType } from 'src/types/announcement';
 
 // components
 import NewAnnouncement from './NewAnnouncement';
@@ -102,7 +102,11 @@ const Announcements = () => {
           ...classes.center
         }}
       >
-        <NewAnnouncement user={user} onSubmit={handleCancelAddingAnnouncement} onCancel={handleCancelAddingAnnouncement} />
+        <NewAnnouncement
+          user={user}
+          onSubmit={handleCancelAddingAnnouncement}
+          onCancel={handleCancelAddingAnnouncement}
+        />
       </Box>
     );
   };
@@ -111,7 +115,10 @@ const Announcements = () => {
     <AnnouncementsWrapper>
       {addingAnnouncement &&
         (contractNewAnnouncement ? (
-          <FadeOut sx={fullWidthSx} length={0.4}>
+          <FadeOut
+            sx={fullWidthSx}
+            length={0.4}
+          >
             <ExpandUp callback={handleNewAnnouncementCallback}>
               <NewAnnoucementEl />
             </ExpandUp>
@@ -126,7 +133,10 @@ const Announcements = () => {
       {announcementResponse ? (
         announcements.length > 0 ? (
           <>
-            <PageTitle length={0} sx={{ ...paddingSx, paddingBottom: 0 }}>
+            <PageTitle
+              length={0}
+              sx={{ ...paddingSx, paddingBottom: 0 }}
+            >
               Announcements
             </PageTitle>
             <ExpandDown
@@ -140,7 +150,10 @@ const Announcements = () => {
                     .sort((a: AnnouncementType, b: AnnouncementType) => b.timestamp - a.timestamp)
                     .map(
                       (announcement: AnnouncementType): React.ReactNode => (
-                        <Announcement key={v4()} announcement={announcement} />
+                        <Announcement
+                          key={v4()}
+                          announcement={announcement}
+                        />
                       )
                     )}
                 </AnnouncementList>
@@ -159,7 +172,11 @@ const Announcements = () => {
         </>
       )}
       {isAdmin && (
-        <Fab sx={fabStyles} color="primary" onClick={handleAddingAnnouncement}>
+        <Fab
+          sx={fabStyles}
+          color="primary"
+          onClick={handleAddingAnnouncement}
+        >
           <AddIcon />
         </Fab>
       )}

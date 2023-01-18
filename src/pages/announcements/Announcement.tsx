@@ -2,15 +2,7 @@
 import { useContext, useState } from 'react';
 
 // mui
-import {
-  IconButton,
-  TextField,
-  Typography,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button
-} from '@mui/material';
+import { IconButton, TextField, Typography, Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DeleteOutlineRounded, EditRounded, DoneRounded } from '@mui/icons-material';
 
@@ -22,7 +14,7 @@ import { utils } from 'utils/style-utils';
 import { updateAnnouncement, deleteAnnouncement } from 'src/utils/firebase';
 
 // types
-import type { AnnouncementType } from 'types/announcement';
+import type { AnnouncementType } from 'src/types/announcement';
 
 // components
 import Card from 'components/card';
@@ -62,7 +54,12 @@ const FromInfo = styled('div')({
   flexDirection: 'column'
 });
 
-const FromName = styled((props: any) => <Typography variant="span" {...props} />)(({ theme }) => ({
+const FromName = styled((props: any) => (
+  <Typography
+    variant="span"
+    {...props}
+  />
+))(({ theme }) => ({
   fontSize: '14px',
   fontWeight: 500,
   color: theme.palette.text.primary
@@ -136,9 +133,7 @@ const Announcement = ({ announcement }: Props) => {
         open={dialogOpen}
         onClose={handleDialogClose}
       >
-        <DialogTitle>
-          {"Are you sure you want to delete this announcement?"}
-        </DialogTitle>
+        <DialogTitle>{'Are you sure you want to delete this announcement?'}</DialogTitle>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
           <Button
@@ -151,10 +146,18 @@ const Announcement = ({ announcement }: Props) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Card sx={cardSx} stretch>
+      <Card
+        sx={cardSx}
+        stretch
+      >
         <Info>
           <From>
-            <img src={announcement.fromPhotoUrl} alt="" style={imgSx} referrerPolicy="no-referrer" />
+            <img
+              src={announcement.fromPhotoUrl}
+              alt=""
+              style={imgSx}
+              referrerPolicy="no-referrer"
+            />
             <FromInfo>
               <FromName>{announcement.from}</FromName>
               <Timestamp>{announcement.date}</Timestamp>
@@ -163,16 +166,28 @@ const Announcement = ({ announcement }: Props) => {
           {isAdmin && (
             <Controls>
               {editing ? (
-                <IconButton color="primary" onClick={handleSubmitEdit} sx={handleButtonStyle}>
+                <IconButton
+                  color="primary"
+                  onClick={handleSubmitEdit}
+                  sx={handleButtonStyle}
+                >
                   <DoneRounded />
                 </IconButton>
               ) : (
-                <IconButton color="default" sx={handleButtonStyle} onClick={handleStartEdit}>
+                <IconButton
+                  color="default"
+                  sx={handleButtonStyle}
+                  onClick={handleStartEdit}
+                >
                   <EditRounded />
                 </IconButton>
               )}
               {!editing && (
-                <IconButton color="error" sx={handleButtonStyle} onClick={handleStartDelete}>
+                <IconButton
+                  color="error"
+                  sx={handleButtonStyle}
+                  onClick={handleStartDelete}
+                >
                   <DeleteOutlineRounded />
                 </IconButton>
               )}
@@ -181,7 +196,15 @@ const Announcement = ({ announcement }: Props) => {
         </Info>
         <EditContainer>
           {editing ? (
-            <TextField label="Content" variant="filled" fullWidth multiline rows={3} onChange={(e: any): void => setNewValue(e.target.value)} value={newValue} />
+            <TextField
+              label="Content"
+              variant="filled"
+              fullWidth
+              multiline
+              rows={3}
+              onChange={(e: any): void => setNewValue(e.target.value)}
+              value={newValue}
+            />
           ) : (
             announcement.content.split('\n').map((line: string, index: number, array: string[]) => (
               <span key={`announcement-content-${index}`}>

@@ -2,19 +2,14 @@
 import { useEffect, useState, useContext } from 'react';
 
 // mui
-import {
-  Backdrop,
-  Box,
-  CircularProgress,
-  useTheme,
-  Typography
-} from '@mui/material';
+import { Backdrop, Box, CircularProgress, useTheme, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 // firebase
 import { createDefaultUser, db } from 'utils/firebase';
 import { onSnapshot, doc, DocumentData, DocumentSnapshot } from 'firebase/firestore';
+import { User } from 'firebase/auth';
 
 // utils
 import { UserContext } from 'contexts/UserContext';
@@ -47,7 +42,7 @@ const HomeCards = styled('div')({
 
 const Points = styled('div')({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'column'
 });
 
 const PointsWrapper = styled('div')({
@@ -101,7 +96,7 @@ const Amount = styled('span')({
   borderRadius: '50px',
   display: 'flex',
   alignItems: 'center',
-  padding: '6px 10px',
+  padding: '6px 10px'
 });
 
 const NegativeSignedValue = styled('div')({
@@ -111,7 +106,7 @@ const NegativeSignedValue = styled('div')({
     content: "''",
     position: 'absolute',
     top: '50%',
-    left: 'calc(-50% - 6px)',
+    left: 'calc(-50% + 19px)',
     height: '1px',
     width: '7px',
     background: 'red'
@@ -124,11 +119,11 @@ const HistoryTitle = styled('div')(({ theme }) => ({
   background: theme.palette.background.paper,
   padding: '20px 20px 12px 20px',
   zIndex: 200,
-  transition: '0.1s',
+  transition: '0.1s'
 }));
 
 const Home = () => {
-  const user: any = useContext(UserContext);
+  const user: User | null | undefined = useContext(UserContext);
   const theme = useTheme();
 
   const [points, setPoints] = useState<number | null>(null);
@@ -170,7 +165,9 @@ const Home = () => {
           setHasUserResponse(true);
           if (snapshot.exists()) {
             const data = snapshot.data();
-            const points = data.history.map((item: any) => item.amount).reduce((acc: number, curr: number) => acc + curr, 0);
+            const points = data.history
+              .map((item: any) => item.amount)
+              .reduce((acc: number, curr: number) => acc + curr, 0);
             setPoints(points);
             setHistory(data.history);
           } else {
@@ -243,13 +240,13 @@ const Home = () => {
                                     sx={
                                       value.amount >= 0
                                         ? {
-                                          color: '#28a745',
-                                          border: '1px solid #28a745',
-                                        }
+                                            color: '#28a745',
+                                            border: '1px solid #28a745'
+                                          }
                                         : {
-                                          color: '#dc3545',
-                                          border: '1px solid #dc3545'
-                                        }
+                                            color: '#dc3545',
+                                            border: '1px solid #dc3545'
+                                          }
                                     }
                                   >
                                     <SignedValue value={value.amount} />
@@ -268,7 +265,11 @@ const Home = () => {
                           )
                         ) : (
                           <FullCenter>
-                            <CircularProgress color="info" size={26} thickness={5} />
+                            <CircularProgress
+                              color="info"
+                              size={26}
+                              thickness={5}
+                            />
                           </FullCenter>
                         )}
                       </History>
@@ -292,10 +293,9 @@ const Home = () => {
                         sx={{
                           ...(historyScrollTop > 0
                             ? {
-                              boxShadow: shadowSx
-                            }
-                            : {}
-                          )
+                                boxShadow: shadowSx
+                              }
+                            : {})
                         }}
                       >
                         <CardTitle size="large">Point history</CardTitle>
@@ -313,13 +313,13 @@ const Home = () => {
                                   sx={
                                     value.amount >= 0
                                       ? {
-                                        color: '#28a745',
-                                        border: '1px solid #28a745',
-                                      }
+                                          color: '#28a745',
+                                          border: '1px solid #28a745'
+                                        }
                                       : {
-                                        color: '#dc3545',
-                                        border: '1px solid #dc3545'
-                                      }
+                                          color: '#dc3545',
+                                          border: '1px solid #dc3545'
+                                        }
                                   }
                                 >
                                   <SignedValue value={value.amount} />
@@ -327,11 +327,7 @@ const Home = () => {
                               </HistoryItem>
                             ))
                           ) : (
-                            <Typography
-                              variant="body1"
-                            >
-                              No Point History
-                            </Typography>
+                            <Typography variant="body1">No Point History</Typography>
                           )}
                         </History>
                       </FullHistoryWrapper>

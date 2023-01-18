@@ -1,4 +1,4 @@
-export interface AnnouncementType {
+export declare interface AnnouncementType {
   from: string;
   fromPhotoUrl: string;
   content: string;

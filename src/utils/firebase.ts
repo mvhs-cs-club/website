@@ -24,7 +24,7 @@ import {
 import { languages } from 'utils/languages';
 import type { ChallengeType, ChallengeStatus, CodeType } from 'types/challenge';
 import type { AdminType } from 'types/admin';
-import type { AnnouncementType } from 'types/announcement';
+import type { AnnouncementType } from 'src/types/announcement';
 import type { UserType } from 'types/user';
 import type { ProblemType } from 'types/problem';
 import { v4 } from 'uuid';
@@ -107,7 +107,7 @@ export const createDefaultUser = async (user: any): Promise<UserType> => {
   };
   await setDoc(doc(db, 'users', user.uid), defaultUser);
   return defaultUser;
-}
+};
 
 export const processRequestCol = (requestCol: QuerySnapshot<DocumentData>): AdminType[] => {
   const requests: any[] = [];
@@ -154,7 +154,7 @@ export const getUserData = async (user: any): Promise<UserType> => {
   const uid = user.uid;
   const snap = await getDoc(doc(db, 'users', uid));
   if (snap.exists()) {
-    return (snap.data() as UserType);
+    return snap.data() as UserType;
   } else {
     const newUser = await createDefaultUser(user);
     return newUser;
@@ -214,7 +214,7 @@ export const getChallenges = async (): Promise<ChallengeType[]> => {
 };
 
 export const deleteChallenge = async (name: string): Promise<void> => {
-	await deleteDoc(doc(db, 'challenges', name));
+  await deleteDoc(doc(db, 'challenges', name));
 };
 
 export const replaceChallenge = async (from: string, to: ChallengeType): Promise<void> => {
@@ -223,10 +223,12 @@ export const replaceChallenge = async (from: string, to: ChallengeType): Promise
 };
 
 export const signIn = async (): Promise<void> => {
-  await setPersistence(auth, browserLocalPersistence).then(() => {
-    const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
-  }).catch(() => { });
+  await setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+      const provider = new GoogleAuthProvider();
+      return signInWithPopup(auth, provider);
+    })
+    .catch(() => {});
   const user = auth.currentUser;
   if (user !== null) {
     const newUser = await getDoc(doc(db, 'users', user.uid));
@@ -259,13 +261,13 @@ export const getChallengeData = async (id: string): Promise<ChallengeStatus | nu
   if (user === null) return null;
   const challengeDoc = await getDoc(doc(db, 'users', user.uid, 'challenges', id));
   if (challengeDoc.exists()) {
-    return (challengeDoc.data() as ChallengeStatus);
+    return challengeDoc.data() as ChallengeStatus;
   } else {
     const defaults: ChallengeStatus = {
       id,
       status: 'inprogress',
       code: languages.reduce((prev, current) => {
-        let copy = {...prev};
+        let copy = { ...prev };
         copy[current] = '';
         return copy;
       }, {} as any)
@@ -289,4 +291,29 @@ export const updateChallengeCode = async (id: string, code: CodeType): Promise<v
   await updateDoc(doc(db, 'users', user.uid, 'challenges', id), {
     code
   });
+};
+
+export const requestAttendance = async (user: UserType) => {
+  const dateString = new Date().toLocaleDateString().replace(/\//g, '-');
+  const todaysRequest = await getDoc(doc(db, 'attendance_requests', dateString));
+  const data: { [key: string]: Partial<UserType> } = todaysRequest.data() || {};
+  if (data[user.uid] === undefined) {
+    const { history, ...info } = user;
+    const req: Partial<UserType> = {
+      ...info
+    };
+    data[user.uid] = req;
+    setDoc(doc(db, 'attendance_requests', dateString), data);
+  } else {
+    console.log('already requested');
+  }
+};
+
+export const removeAttendanceRequest = async (date: string, uid: string) => {
+  const reqs = await getDoc(doc(db, 'attendance_requests', date));
+  let data = reqs.data();
+  if (!data) return;
+  if (!data[uid]) return;
+  delete data[uid];
+  setDoc(doc(db, 'attendance_requests', date), data);
 };

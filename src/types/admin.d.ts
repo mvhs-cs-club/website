@@ -1,4 +1,4 @@
-export interface AdminType {
+export declare interface AdminType {
   name: string;
   photoUrl: string;
   email: string;

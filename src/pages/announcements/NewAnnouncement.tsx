@@ -12,7 +12,7 @@ import { addAnnouncement } from 'utils/firebase';
 import { UserContext } from 'contexts/UserContext';
 
 // types
-import type { AnnouncementType } from 'types/announcement';
+import type { AnnouncementType } from 'src/types/announcement';
 import type { ErrorRuleType } from 'types/utils';
 
 // components
@@ -125,7 +125,12 @@ const NewAnnouncement = ({ onSubmit, onCancel }: Props) => {
     return showingAlerts ? (
       <AbsoluteAlerts>
         {errors.map((error: string, index: number) => (
-          <Alert key={`error-alert-${index}`} onClose={() => { }} color="error" absolute={false}>
+          <Alert
+            key={`error-alert-${index}`}
+            onClose={() => {}}
+            color="error"
+            absolute={false}
+          >
             {error}
           </Alert>
         ))}

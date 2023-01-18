@@ -1,4 +1,5 @@
 // react
+import { User } from 'firebase/auth';
 import { createContext } from 'react';
 
 // types
@@ -8,7 +9,7 @@ import { UserType } from 'types/user';
 // true  -> info/true
 // false -> no info/false
 
-export const UserContext = createContext<any>(null);
+export const UserContext = createContext<undefined | null | User>(null);
 export const UserLoadingContext = createContext<boolean>(true);
 export const AdminContext = createContext<boolean | null>(null);
 export const UserResponseContext = createContext<boolean>(false);

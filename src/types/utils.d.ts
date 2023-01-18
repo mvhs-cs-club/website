@@ -1,27 +1,27 @@
-export interface PointHistory {
+export declare interface PointHistory {
   date: string;
   timestamp: number;
   reason: string;
   amount: number;
 }
 
-export interface RouteType {
+export declare interface RouteType {
   path: string;
   element: React.ReactNode;
   rule?: boolean;
 }
 
-export interface PathType {
+export declare interface PathType {
   path: string;
   name: string | React.ReactNode;
   icon: React.ReactNode;
 }
 
-export interface ErrorRuleType {
+export declare interface ErrorRuleType {
   rule: boolean;
   error: string;
 }
 
-export interface ColorProps {
+export declare interface ColorProps {
   readonly [key: string]: string;
 }

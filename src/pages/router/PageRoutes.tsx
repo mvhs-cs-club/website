@@ -13,6 +13,7 @@ import Challenges from 'pages/Challenges';
 import Challenge from 'pages/challenge';
 import ActionPanel from 'pages/action-panel';
 import The404Page from 'pages/404-page';
+import RequestAttendance from 'pages/request-attendance';
 
 const routes: RouteType[] = [
   {
@@ -54,6 +55,10 @@ const routes: RouteType[] = [
   {
     path: '/actions',
     element: <ActionPanel />
+  },
+  {
+    path: '/request-attendance',
+    element: <RequestAttendance />
   },
   {
     path: '*',

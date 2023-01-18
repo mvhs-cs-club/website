@@ -7,13 +7,7 @@ import { styled } from '@mui/material/styles';
 // firebase
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, getChallenges, db } from 'utils/firebase';
-import {
-  onSnapshot,
-  collection,
-  DocumentData,
-  QuerySnapshot,
-  doc
-} from 'firebase/firestore';
+import { onSnapshot, collection, DocumentData, QuerySnapshot, doc } from 'firebase/firestore';
 
 // utils
 import {
@@ -22,7 +16,7 @@ import {
   AdminContext,
   UserResponseContext,
   UsersContext,
-  AdminIdsContext,
+  AdminIdsContext
 } from 'contexts/UserContext';
 import { ChallengesContext } from 'contexts/ChallengesContext';
 import { ProblemsContext } from 'contexts/ProblemsContext';
@@ -37,6 +31,8 @@ import Router from 'pages/router';
 import type { ChallengeType } from 'types/challenge';
 import type { UserType } from 'types/user';
 import type { ProblemType } from 'types/problem';
+import { AttendanceRequestContext } from './contexts/AttendanceContext';
+import { AttendanceMap } from './types/attendance';
 
 const AppWrapper = styled('div')({
   maxHeight: '100vh',
@@ -62,6 +58,7 @@ const App = () => {
   const [leaderboardData, setLeaderboardData] = useState<UserType[] | null>(null);
   const [problems, setProblems] = useState<ProblemType[] | null>(null);
   const [adminIds, setAdminIds] = useState<string[] | null>(null);
+  const [attendanceRequests, setAttendanceRequests] = useState<AttendanceMap>({});
 
   useEffect(() => {
     (async () => {
@@ -90,6 +87,15 @@ const App = () => {
   useEffect((): void => {
     if (user?.uid !== undefined) {
       (async (): Promise<void> => {
+        onSnapshot(collection(db, 'attendance_requests'), (v) => {
+          let tempAttReqMap: AttendanceMap = {};
+          v.forEach((doc) => {
+            tempAttReqMap[doc.id] = doc.data() as Partial<UserType>;
+          });
+          console.log(tempAttReqMap);
+          setAttendanceRequests(tempAttReqMap);
+        });
+
         onSnapshot(doc(db, 'admins', 'admins'), (doc: DocumentData) => {
           const data = doc.data().ids;
           let tempIsAdmin: boolean = data.includes(user.uid);
@@ -125,13 +131,15 @@ const App = () => {
               <ChallengesContext.Provider value={challenges}>
                 <UsersContext.Provider value={leaderboardData}>
                   <ProblemsContext.Provider value={problems}>
-                    <AppWrapper>
-                      <Header />
-                      <Content>
-                        <Sidebar />
-                        <Router />
-                      </Content>
-                    </AppWrapper>
+                    <AttendanceRequestContext.Provider value={attendanceRequests}>
+                      <AppWrapper>
+                        <Header />
+                        <Content>
+                          <Sidebar />
+                          <Router />
+                        </Content>
+                      </AppWrapper>
+                    </AttendanceRequestContext.Provider>
                   </ProblemsContext.Provider>
                 </UsersContext.Provider>
               </ChallengesContext.Provider>

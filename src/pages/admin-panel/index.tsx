@@ -12,7 +12,9 @@ import {
   DialogActions,
   DialogContentText,
   TextField,
-  Grid
+  Grid,
+  Typography,
+  Divider
 } from '@mui/material';
 import { ClearRounded } from '@mui/icons-material';
 
@@ -24,14 +26,10 @@ import {
   processAdminCol,
   db,
   processRequestCol,
-  addPoints
+  addPoints,
+  removeAttendanceRequest
 } from 'utils/firebase';
-import {
-  collection,
-  DocumentData,
-  onSnapshot,
-  QuerySnapshot
-} from 'firebase/firestore';
+import { collection, DocumentData, onSnapshot, QuerySnapshot } from 'firebase/firestore';
 
 // types
 import type { AdminType } from 'types/admin';
@@ -50,6 +48,9 @@ import AuthGuard from 'components/auth-guard';
 
 // utils
 import { UsersContext } from 'src/contexts/UserContext';
+import { AttendanceRequestContext } from 'src/contexts/AttendanceContext';
+import { AttendanceMap } from 'src/types/attendance';
+import { Stack } from '@mui/system';
 
 const AdminContent = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -79,6 +80,7 @@ interface CurrentRequest {
 const AdminPanel = () => {
   const theme = useTheme();
   const users = useContext(UsersContext);
+  const attendanceRequests = useContext(AttendanceRequestContext);
   const [requests, setRequests] = useState<AdminType[]>([]);
   const [admins, setAdmins] = useState<AdminType[]>([]);
   const [rejectDialogOpen, setRejectDialogOpen] = useState<boolean>(false);
@@ -163,7 +165,7 @@ const AdminPanel = () => {
 
   const handleAddPoints = async (): Promise<void> => {
     const amount = parseInt(pointsAmount);
-    await addPoints(managePointsUser, 'From admin', amount)
+    await addPoints(managePointsUser, 'From admin', amount);
     closeManagePoints();
   };
 
@@ -181,6 +183,16 @@ const AdminPanel = () => {
     })();
   }, []);
 
+  const handleApproveAttendance = (date: string, uid: string) => {
+    const member: Partial<UserType> = attendanceRequests[date as keyof AttendanceMap][uid as keyof object];
+    addPoints(member, 'Attending meeting', 50);
+    removeAttendanceRequest(date, uid);
+  };
+
+  const handleRejectAttendance = (date: string, uid: string) => {
+    removeAttendanceRequest(date, uid);
+  };
+
   return (
     <AuthGuard>
       <PageWrapper>
@@ -189,40 +201,120 @@ const AdminPanel = () => {
           <FadeIn>
             <AdminCards>
               <Card sx={adminCardStyle}>
-                <CardTitle size="large">Give Points</CardTitle>
-                {(users !== null && users.length > 0)
-                  ? (
-                    <ExpandDown>
-                      <ProfileBoxWrapper>
-                        {users.map((user: UserType, index: number) => (
-                          <ProfileBox user={user} key={`user-${index}`}>
-                            <Button
-                              color="primary"
-                              variant="outlined"
-                              size="small"
-                              onClick={() => startManagePoints(user)}
+                <CardTitle size="large">Attendance Requests</CardTitle>
+                <ExpandDown>
+                  <ProfileBoxWrapper>
+                    <Grid
+                      container
+                      spacing={1}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column'
+                      }}
+                    >
+                      {Object.keys(attendanceRequests).map((date: string, index: number) => (
+                        <>
+                          <Grid
+                            key={`attendance-req-date-${index}`}
+                            item
+                            xs
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: 400, fontSize: 17 }}
                             >
-                              Manage
-                            </Button>
-                          </ProfileBox>
-                        ))}
-                      </ProfileBoxWrapper>
-                    </ExpandDown>
-                  )
-                  : (
-                    <CardTitle size="small">No admin requests</CardTitle>
-                  )
-                }
+                              {date}
+                            </Typography>
+                            {Object.keys(attendanceRequests[date as keyof AttendanceMap]).length === 0 && (
+                              <Typography
+                                variant="h5"
+                                sx={{ fontWeight: 400, fontSize: 15 }}
+                              >
+                                No requests
+                              </Typography>
+                            )}
+                            {Object.keys(attendanceRequests[date as keyof AttendanceMap]).map(
+                              (uid: string, index: number) => (
+                                <Grid
+                                  key={`attendance-request-${index}`}
+                                  item
+                                  xs
+                                >
+                                  <ProfileBox
+                                    user={
+                                      attendanceRequests[date as keyof AttendanceMap][uid as keyof object]
+                                    }
+                                  >
+                                    <Button
+                                      color="primary"
+                                      variant="outlined"
+                                      size="small"
+                                      onClick={() => handleApproveAttendance(date, uid)}
+                                    >
+                                      Approve
+                                    </Button>
+                                    <Button
+                                      color="error"
+                                      onClick={() => handleRejectAttendance(date, uid)}
+                                    >
+                                      Reject
+                                    </Button>
+                                  </ProfileBox>
+                                </Grid>
+                              )
+                            )}
+                          </Grid>
+                          {index < Object.keys(attendanceRequests).length - 1 && (
+                            <Grid
+                              item
+                              xs
+                              key={`divider-${index}`}
+                            >
+                              <Divider />
+                            </Grid>
+                          )}
+                        </>
+                      ))}
+                    </Grid>
+                  </ProfileBoxWrapper>
+                </ExpandDown>
+              </Card>
+              <Card sx={adminCardStyle}>
+                <CardTitle size="large">Give Points</CardTitle>
+                {users !== null && users.length > 0 ? (
+                  <ExpandDown>
+                    <ProfileBoxWrapper>
+                      {users.map((user: UserType, index: number) => (
+                        <ProfileBox
+                          user={user}
+                          key={`user-${index}`}
+                        >
+                          <Button
+                            color="primary"
+                            variant="outlined"
+                            size="small"
+                            onClick={() => startManagePoints(user)}
+                          >
+                            Manage
+                          </Button>
+                        </ProfileBox>
+                      ))}
+                    </ProfileBoxWrapper>
+                  </ExpandDown>
+                ) : (
+                  <CardTitle size="small">No admin requests</CardTitle>
+                )}
               </Card>
               <Dialog
                 open={managePointsOpen}
                 onClose={closeManagePoints}
               >
-                <DialogTitle>
-                  {"How many points do you want to add or remove"}
-                </DialogTitle>
+                <DialogTitle>{'How many points do you want to add or remove'}</DialogTitle>
                 <DialogContent>
-                  <Grid container spacing={1.5}>
+                  <Grid
+                    container
+                    spacing={1.5}
+                  >
                     <Grid item>
                       <DialogContentText>
                         Positive points for adding, negative points for removeing
@@ -232,7 +324,7 @@ const AdminPanel = () => {
                       <TextField
                         size="small"
                         label="Amount"
-                        onChange={e => setPointsAmount(e.currentTarget.value)}
+                        onChange={(e) => setPointsAmount(e.currentTarget.value)}
                       />
                     </Grid>
                   </Grid>
@@ -255,9 +347,7 @@ const AdminPanel = () => {
                   open={removeAdminOpen}
                   onClose={handleCloseRemoveAdmin}
                 >
-                  <DialogTitle>
-                    {"Are you sure you want to remove this admin?"}
-                  </DialogTitle>
+                  <DialogTitle>{'Are you sure you want to remove this admin?'}</DialogTitle>
                   <DialogActions>
                     <Button onClick={handleCloseRemoveAdmin}>Cancel</Button>
                     <Button
@@ -276,7 +366,12 @@ const AdminPanel = () => {
                       {admins.map((admin: AdminType, index: number) => (
                         <AdminProfileBoxWrapper key={`admin-${index}`}>
                           <ProfileBox user={admin} />
-                          <Button color="error" sx={removeAdminSx} size="small" onClick={() => handleSetCurrentAdmin(admin)}>
+                          <Button
+                            color="error"
+                            sx={removeAdminSx}
+                            size="small"
+                            onClick={() => handleSetCurrentAdmin(admin)}
+                          >
                             <ClearRounded />
                           </Button>
                         </AdminProfileBoxWrapper>
@@ -293,7 +388,10 @@ const AdminPanel = () => {
                   <ExpandDown>
                     <ProfileBoxWrapper>
                       {requests.map((request: AdminType, index: number) => (
-                        <ProfileBox user={request} key={`request-${index}`}>
+                        <ProfileBox
+                          user={request}
+                          key={`request-${index}`}
+                        >
                           <Button
                             color="primary"
                             variant="outlined"
@@ -302,7 +400,10 @@ const AdminPanel = () => {
                           >
                             Approve
                           </Button>
-                          <Button color="error" onClick={() => handleStartRejectRequest(request, index)}>
+                          <Button
+                            color="error"
+                            onClick={() => handleStartRejectRequest(request, index)}
+                          >
                             Reject
                           </Button>
                         </ProfileBox>
@@ -316,9 +417,7 @@ const AdminPanel = () => {
                   open={rejectDialogOpen}
                   onClose={handleCancelRejectRequest}
                 >
-                  <DialogTitle>
-                    {"Are you sure you want to reject this request?"}
-                  </DialogTitle>
+                  <DialogTitle>{'Are you sure you want to reject this request?'}</DialogTitle>
                   <DialogActions>
                     <Button onClick={handleCancelRejectRequest}>Cancel</Button>
                     <Button

@@ -10,11 +10,7 @@ import { addPoints } from 'utils/firebase';
 
 // utils
 import { v4 } from 'uuid';
-import {
-  AdminContext,
-  UsersContext,
-  AdminIdsContext
-} from 'contexts/UserContext';
+import { AdminContext, UsersContext, AdminIdsContext } from 'contexts/UserContext';
 
 // types
 import type { PointHistory } from 'types/utils';
@@ -57,7 +53,7 @@ const Attendance = () => {
   const checkAlreadyMarked = (member: any): boolean => {
     let alreadyMarked: boolean = false;
     member.history.forEach((val: PointHistory) => {
-      if (val.reason === 'attending meeting' && val.date === new Date().toLocaleDateString()) {
+      if (val.reason === 'Attending meeting' && val.date === new Date().toLocaleDateString()) {
         alreadyMarked = true;
         return;
       }
@@ -65,9 +61,9 @@ const Attendance = () => {
     return alreadyMarked;
   };
 
-  const markAsPresent = async (member: any) => {
+  const markAsPresent = (member: any) => {
     if (!checkAlreadyMarked(member)) {
-      await addPoints(member, 'attending meeting', 50);
+      addPoints(member, 'Attending meeting', 50);
     }
   };
 
@@ -87,27 +83,28 @@ const Attendance = () => {
                   <Card sx={memberCardStyle}>
                     <ExpandDown>
                       <ProfileBoxWrapper>
-                        {users !== null
-                          ? (
-                            users
-                              .filter((member: UserType) => !adminIds.includes(member.uid))
-                              .map((member: UserType) => (
-                                <ProfileBox user={member} key={v4()}>
-                                  <Button
-                                    color="info"
-                                    onClick={() => markAsPresent(member)}
-                                    disabled={checkAlreadyMarked(member)}
-                                  >
-                                    Present
-                                  </Button>
-                                </ProfileBox>
-                              ))
-                          ) : (
-                            <FullCenter>
-                              <CircularProgress color="info" />
-                            </FullCenter>
-                          )
-                        }
+                        {users !== null ? (
+                          users
+                            .filter((member: UserType) => !adminIds.includes(member.uid))
+                            .map((member: UserType) => (
+                              <ProfileBox
+                                user={member}
+                                key={v4()}
+                              >
+                                <Button
+                                  color="info"
+                                  onClick={() => markAsPresent(member)}
+                                  disabled={checkAlreadyMarked(member)}
+                                >
+                                  Present
+                                </Button>
+                              </ProfileBox>
+                            ))
+                        ) : (
+                          <FullCenter>
+                            <CircularProgress color="info" />
+                          </FullCenter>
+                        )}
                       </ProfileBoxWrapper>
                     </ExpandDown>
                   </Card>
