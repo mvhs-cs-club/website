@@ -182,12 +182,6 @@ const Home = () => {
     setHistoryScrollTop(e.target.scrollTop);
   };
 
-  const SignedValue = ({ value }: { value: number }) => {
-    const temp = Math.abs(value);
-
-    return value >= 0 ? <>+ {temp}</> : <NegativeSignedValue>{temp}</NegativeSignedValue>;
-  };
-
   return (
     <PageWrapper>
       <HomeWrapper>
@@ -249,7 +243,7 @@ const Home = () => {
                                           }
                                     }
                                   >
-                                    <SignedValue value={value.amount} />
+                                    {value.amount}
                                   </Amount>
                                 </HistoryItem>
                               ))
@@ -322,7 +316,7 @@ const Home = () => {
                                         }
                                   }
                                 >
-                                  <SignedValue value={value.amount} />
+                                  {value.amount}
                                 </Amount>
                               </HistoryItem>
                             ))

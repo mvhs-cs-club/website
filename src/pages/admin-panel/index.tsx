@@ -82,13 +82,14 @@ const AdminPanel = () => {
   const attendanceRequests = useContext(AttendanceRequestContext);
   const [requests, setRequests] = useState<AdminType[]>([]);
   const [admins, setAdmins] = useState<AdminType[]>([]);
-  const [rejectDialogOpen, setRejectDialogOpen] = useState<boolean>(false);
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [currentRequest, setCurrentRequest] = useState<CurrentRequest | null>(null);
   const [currentAdmin, setCurrentAdmin] = useState<AdminType | null>(null);
-  const [removeAdminOpen, setRemoveAdminOpen] = useState<boolean>(false);
-  const [managePointsOpen, setManagePointsOpen] = useState<boolean>(false);
+  const [removeAdminOpen, setRemoveAdminOpen] = useState(false);
+  const [managePointsOpen, setManagePointsOpen] = useState(false);
   const [managePointsUser, setManagePointsUser] = useState<any>(null);
-  const [pointsAmount, setPointsAmount] = useState<string>('');
+  const [pointsAmount, setPointsAmount] = useState('');
+  const [pointsReason, setPointsReason] = useState('From admin');
 
   const adminCardStyle = {
     minWidth: 400,
@@ -158,13 +159,14 @@ const AdminPanel = () => {
 
   const closeManagePoints = (): void => {
     setPointsAmount('');
+    setPointsReason('From admin');
     setManagePointsUser(null);
     setManagePointsOpen(false);
   };
 
   const handleAddPoints = async (): Promise<void> => {
     const amount = parseInt(pointsAmount);
-    await addPoints(managePointsUser, 'From admin', amount);
+    await addPoints(managePointsUser, pointsReason, amount);
     closeManagePoints();
   };
 
@@ -314,15 +316,34 @@ const AdminPanel = () => {
                     container
                     spacing={1.5}
                   >
-                    <Grid item>
+                    <Grid
+                      item
+                      xs={12}
+                    >
                       <DialogContentText>
-                        Positive points for adding, negative points for removeing
+                        Positive points for adding, negative points for removing
                       </DialogContentText>
                     </Grid>
-                    <Grid item>
+                    <Grid
+                      item
+                      xs={12}
+                    >
+                      <TextField
+                        size="small"
+                        label="Reason"
+                        fullWidth
+                        multiline
+                        onChange={(e) => setPointsReason(e.currentTarget.value)}
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={6}
+                    >
                       <TextField
                         size="small"
                         label="Amount"
+                        fullWidth
                         onChange={(e) => setPointsAmount(e.currentTarget.value)}
                       />
                     </Grid>
