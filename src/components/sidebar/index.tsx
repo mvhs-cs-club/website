@@ -15,7 +15,8 @@ import {
   PriorityHighRounded,
   Info,
   Construction,
-  TuneRounded
+  TuneRounded,
+  People
 } from '@mui/icons-material';
 import { Button, Fab, Box, useTheme, Chip } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -147,6 +148,13 @@ const Sidebar = () => {
       path: '/actions',
       name: 'Action Panel',
       icon: <TuneRounded></TuneRounded>
+    });
+  }
+  if (user !== null && !isAdmin) {
+    paths.push({
+      path: '/request-attendance',
+      name: 'Request Attendance',
+      icon: <People />
     });
   }
   paths.push({

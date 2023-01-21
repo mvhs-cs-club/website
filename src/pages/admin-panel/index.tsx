@@ -185,6 +185,7 @@ const AdminPanel = () => {
   }, []);
 
   const handleApproveAttendance = (date: string, uid: string) => {
+    if (!attendanceRequests) return;
     const member: Partial<UserType> = attendanceRequests[date as keyof AttendanceMap][uid as keyof object];
     addPoints(member, 'Attending meeting', 50);
     removeAttendanceRequest(date, uid);
@@ -213,69 +214,87 @@ const AdminPanel = () => {
                         flexDirection: 'column'
                       }}
                     >
-                      {Object.keys(attendanceRequests).map((date: string, index: number) => (
-                        <>
-                          <Grid
-                            key={`attendance-req-date-${index}`}
-                            item
-                            xs
-                          >
-                            <Typography
-                              variant="body2"
-                              sx={{ fontWeight: 400, fontSize: 17 }}
-                            >
-                              {date}
-                            </Typography>
-                            {Object.keys(attendanceRequests[date as keyof AttendanceMap]).length === 0 && (
-                              <Typography
-                                variant="h5"
-                                sx={{ fontWeight: 400, fontSize: 15 }}
-                              >
-                                No requests
-                              </Typography>
-                            )}
-                            {Object.keys(attendanceRequests[date as keyof AttendanceMap]).map(
-                              (uid: string, index: number) => (
-                                <Grid
-                                  key={`attendance-request-${index}`}
-                                  item
-                                  xs
-                                >
-                                  <ProfileBox
-                                    user={
-                                      attendanceRequests[date as keyof AttendanceMap][uid as keyof object]
-                                    }
-                                  >
-                                    <Button
-                                      color="primary"
-                                      variant="outlined"
-                                      size="small"
-                                      onClick={() => handleApproveAttendance(date, uid)}
-                                    >
-                                      Approve
-                                    </Button>
-                                    <Button
-                                      color="error"
-                                      onClick={() => handleRejectAttendance(date, uid)}
-                                    >
-                                      Reject
-                                    </Button>
-                                  </ProfileBox>
-                                </Grid>
-                              )
-                            )}
-                          </Grid>
-                          {index < Object.keys(attendanceRequests).length - 1 && (
+                      {attendanceRequests &&
+                        Object.keys(attendanceRequests)
+                          .reverse()
+                          .map((date: string, index: number) => (
                             <Grid
                               item
                               xs
-                              key={`divider-${index}`}
+                              key={`attd-req-${index}`}
                             >
-                              <Divider />
+                              <Grid
+                                container
+                                spacing={1}
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'column'
+                                }}
+                              >
+                                <Grid
+                                  item
+                                  xs
+                                >
+                                  <Typography
+                                    variant="body2"
+                                    sx={{ fontWeight: 400, fontSize: 17 }}
+                                  >
+                                    {date}
+                                  </Typography>
+                                  {Object.keys(attendanceRequests[date as keyof AttendanceMap]).length ===
+                                    0 && (
+                                    <Typography
+                                      variant="h5"
+                                      sx={{ fontWeight: 400, fontSize: 15 }}
+                                    >
+                                      No requests
+                                    </Typography>
+                                  )}
+                                  {Object.keys(attendanceRequests[date as keyof AttendanceMap]).map(
+                                    (uid: string, index: number) => (
+                                      <Grid
+                                        key={`attendance-request-${index}`}
+                                        item
+                                        xs
+                                      >
+                                        <ProfileBox
+                                          user={
+                                            attendanceRequests[date as keyof AttendanceMap][
+                                              uid as keyof object
+                                            ]
+                                          }
+                                        >
+                                          <Button
+                                            color="primary"
+                                            variant="outlined"
+                                            size="small"
+                                            onClick={() => handleApproveAttendance(date, uid)}
+                                          >
+                                            Approve
+                                          </Button>
+                                          <Button
+                                            color="error"
+                                            onClick={() => handleRejectAttendance(date, uid)}
+                                          >
+                                            Reject
+                                          </Button>
+                                        </ProfileBox>
+                                      </Grid>
+                                    )
+                                  )}
+                                </Grid>
+                                {index < Object.keys(attendanceRequests).length - 1 && (
+                                  <Grid
+                                    item
+                                    xs
+                                    key={`divider-${index}`}
+                                  >
+                                    <Divider />
+                                  </Grid>
+                                )}
+                              </Grid>
                             </Grid>
-                          )}
-                        </>
-                      ))}
+                          ))}
                     </Grid>
                   </ProfileBoxWrapper>
                 </ExpandDown>

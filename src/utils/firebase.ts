@@ -304,8 +304,6 @@ export const requestAttendance = async (user: UserType) => {
     };
     data[user.uid] = req;
     setDoc(doc(db, 'attendance_requests', dateString), data);
-  } else {
-    console.log('already requested');
   }
 };
 

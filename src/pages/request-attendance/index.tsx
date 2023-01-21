@@ -1,5 +1,5 @@
 // react
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // mui
 import { Button, CircularProgress } from '@mui/material';
@@ -18,11 +18,16 @@ import PageTitle from 'components/page-title';
 import PageWrapper from 'components/page-wrapper';
 import Card from 'components/card';
 import CardTitle from 'src/components/card-title';
+import { AttendanceRequestContext } from 'src/contexts/AttendanceContext';
+import { AttendanceMap } from 'src/types/attendance';
 
 const RequestAttendance = () => {
   const user = useContext(UserContext);
   const users = useContext(UsersContext);
   const userLoading = useContext(UserLoadingContext);
+  const [userInfo, setUserInfo] = useState<UserType | null>(null);
+  const [canRequest, setCanRequest] = useState(false);
+  const attendanceRequests = useContext(AttendanceRequestContext);
 
   const getUser = (users: UserType[], user: User): UserType | null => {
     for (let i = 0; i < users.length; i++) {
@@ -31,10 +36,31 @@ const RequestAttendance = () => {
     return null;
   };
 
+  const checkAlreadyRequested = (requests: AttendanceMap, user: UserType): boolean => {
+    const date = new Date().toLocaleDateString().replace(/\//g, '-');
+    if (requests[date]) {
+      return Boolean(requests[date][user.uid]);
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    if (user && users && attendanceRequests) {
+      const tempUserInfo = getUser(users, user);
+      setUserInfo(tempUserInfo);
+    }
+  }, [user, users, attendanceRequests]);
+
+  useEffect(() => {
+    if (userInfo && attendanceRequests && !checkAlreadyRequested(attendanceRequests, userInfo)) {
+      setCanRequest(true);
+    } else {
+      setCanRequest(false);
+    }
+  }, [userInfo, attendanceRequests]);
+
   const handleRequestAttendance = () => {
-    if (!user || !users) return;
-    const userInfo = getUser(users, user);
-    if (!userInfo) return;
+    if (!userInfo || !attendanceRequests || checkAlreadyRequested(attendanceRequests, userInfo)) return;
     requestAttendance(userInfo);
   };
 
@@ -66,8 +92,9 @@ const RequestAttendance = () => {
               variant="outlined"
               size="large"
               onClick={handleRequestAttendance}
+              disabled={!canRequest}
             >
-              Request Attendance
+              {canRequest ? 'Request Attendance' : 'Already requested'}
             </Button>
           )
         ) : (

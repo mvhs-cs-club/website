@@ -58,7 +58,7 @@ const App = () => {
   const [leaderboardData, setLeaderboardData] = useState<UserType[] | null>(null);
   const [problems, setProblems] = useState<ProblemType[] | null>(null);
   const [adminIds, setAdminIds] = useState<string[] | null>(null);
-  const [attendanceRequests, setAttendanceRequests] = useState<AttendanceMap>({});
+  const [attendanceRequests, setAttendanceRequests] = useState<AttendanceMap | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -92,7 +92,6 @@ const App = () => {
           v.forEach((doc) => {
             tempAttReqMap[doc.id] = doc.data() as Partial<UserType>;
           });
-          console.log(tempAttReqMap);
           setAttendanceRequests(tempAttReqMap);
         });
 
