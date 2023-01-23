@@ -36,10 +36,22 @@ const RequestAttendance = () => {
     return null;
   };
 
-  const checkAlreadyRequested = (requests: AttendanceMap, user: UserType): boolean => {
+  const checkAlreadyMarked = (member: UserType): boolean => {
+    for (let i = 0; i < member.history.length; i++) {
+      const val = member.history[i];
+      if (val.reason === 'Attending meeting' && val.date === new Date().toLocaleDateString()) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const checkCanRequest = (requests: AttendanceMap, user: UserType): boolean => {
+    console.log(requests);
     const date = new Date().toLocaleDateString().replace(/\//g, '-');
     if (requests[date]) {
-      return Boolean(requests[date][user.uid]);
+      const alreadyMarked = checkAlreadyMarked(user);
+      return Boolean(requests[date][user.uid]) || alreadyMarked;
     }
     return false;
   };
@@ -52,7 +64,7 @@ const RequestAttendance = () => {
   }, [user, users, attendanceRequests]);
 
   useEffect(() => {
-    if (userInfo && attendanceRequests && !checkAlreadyRequested(attendanceRequests, userInfo)) {
+    if (userInfo && attendanceRequests && !checkCanRequest(attendanceRequests, userInfo)) {
       setCanRequest(true);
     } else {
       setCanRequest(false);
@@ -60,7 +72,7 @@ const RequestAttendance = () => {
   }, [userInfo, attendanceRequests]);
 
   const handleRequestAttendance = () => {
-    if (!userInfo || !attendanceRequests || checkAlreadyRequested(attendanceRequests, userInfo)) return;
+    if (!userInfo || !attendanceRequests || checkCanRequest(attendanceRequests, userInfo)) return;
     requestAttendance(userInfo);
   };
 
