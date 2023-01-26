@@ -394,7 +394,7 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
                 >
                   <TextField
                     label="Inputs"
-                    placeholder="Seperated by space or surrounded by double quotes. Each input on a seperate line."
+                    placeholder="Separated by space or surrounded by double quotes. Each input on a separate line."
                     variant="filled"
                     fullWidth
                     multiline

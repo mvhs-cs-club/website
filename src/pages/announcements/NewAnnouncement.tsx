@@ -150,7 +150,7 @@ const NewAnnouncement = ({ onSubmit, onCancel }: Props) => {
           }}
           size="small"
         >
-          Create a New Annoucement
+          Create a New Announcement
         </PageTitle>
         <InputWrapper>
           <TextField

@@ -56,7 +56,7 @@ const About = () => {
         The MVHS CS Club is a student-run organization that aims to provide a welcoming environment for
         students to learn and develop their skills in computer science.
       </P>
-      <P>We host events throughout the school year such as hackathons, app competitions, and more.</P>
+      <P>We host events throughout the school year such as app competitions, auctions, and more.</P>
       <SocialLink to={discordLink}>
         <Img
           src={discordIcon}

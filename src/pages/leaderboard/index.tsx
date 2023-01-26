@@ -85,7 +85,7 @@ const DataWrapper = styled('span')(({ theme }) => ({
 
 const Leaderboard = () => {
   const leaderboard: UserType[] | null = useContext(UsersContext);
-  const [leaderbaordScroll, setLeaderboardScroll] = useState<number>(0);
+  const [leaderboardScroll, setLeaderboardScroll] = useState<number>(0);
   const theme = useTheme();
   const goldColor = '#f5ce00';
   const silverColor = '#C0C0C0';
@@ -125,7 +125,7 @@ const Leaderboard = () => {
             <LeaderboardHeader
               sx={{
                 background: theme.palette.background.default,
-                ...(leaderbaordScroll > 0 ? leaderboardShadowSx : {})
+                ...(leaderboardScroll > 0 ? leaderboardShadowSx : {})
               }}
             >
               <Sub>Name</Sub>
@@ -142,7 +142,7 @@ const Leaderboard = () => {
                             getPointsFromHistory(b.history) - getPointsFromHistory(a.history)
                         )
                         .map((data: UserType, i: number) => (
-                          <LeaderboardItem key={`leaderbaord-item-${i}`}>
+                          <LeaderboardItem key={`leaderboard-item-${i}`}>
                             {i === 0 ? (
                               <AbsolutePlaceWrapper>
                                 <EmojiEventsIcon sx={{ color: goldColor }} />
