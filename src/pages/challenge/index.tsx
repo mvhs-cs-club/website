@@ -187,9 +187,7 @@ const Challenge = () => {
         })
         .catch(() => {
           if (devMode) {
-            console.warn(
-              `Unable to reach server. Check that local server is running on http://localhost:${devMode}`
-            );
+            console.warn('Unable to reach server.');
           }
         });
       setAwaiting(false);
@@ -206,8 +204,6 @@ const Challenge = () => {
           }
         }
       }
-    } else {
-      console.warn('Challenge is null');
     }
   };
 

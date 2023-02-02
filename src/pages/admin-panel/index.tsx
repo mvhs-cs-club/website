@@ -27,7 +27,8 @@ import {
   db,
   processRequestCol,
   addPoints,
-  removeAttendanceRequest
+  removeAttendanceRequest,
+  logAttendance
 } from 'utils/firebase';
 import { collection, DocumentData, onSnapshot, QuerySnapshot } from 'firebase/firestore';
 
@@ -186,8 +187,9 @@ const AdminPanel = () => {
 
   const handleApproveAttendance = (date: string, uid: string) => {
     if (!attendanceRequests) return;
-    const member: Partial<UserType> = attendanceRequests[date as keyof AttendanceMap][uid as keyof object];
+    const member = attendanceRequests[date as keyof AttendanceMap][uid as keyof object];
     addPoints(member, 'Attending meeting', 50);
+    logAttendance(member, date);
     removeAttendanceRequest(date, uid);
   };
 
@@ -214,6 +216,14 @@ const AdminPanel = () => {
                         flexDirection: 'column'
                       }}
                     >
+                      {attendanceRequests && Object.keys(attendanceRequests).length === 0 && (
+                        <Grid
+                          item
+                          xs
+                        >
+                          <Typography>No Requests</Typography>
+                        </Grid>
+                      )}
                       {attendanceRequests &&
                         Object.keys(attendanceRequests)
                           .reverse()

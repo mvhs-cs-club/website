@@ -32,7 +32,7 @@ import type { ChallengeType } from 'types/challenge';
 import type { UserType } from 'types/user';
 import type { ProblemType } from 'types/problem';
 import { AttendanceRequestContext } from './contexts/AttendanceContext';
-import { AttendanceMap } from './types/attendance';
+import { AttendanceMap, AttendanceUser } from './types/attendance';
 
 const AppWrapper = styled('div')({
   maxHeight: '100vh',
@@ -90,7 +90,7 @@ const App = () => {
         onSnapshot(collection(db, 'attendance_requests'), (v) => {
           let tempAttReqMap: AttendanceMap = {};
           v.forEach((doc) => {
-            tempAttReqMap[doc.id] = doc.data() as Partial<UserType>;
+            tempAttReqMap[doc.id as keyof AttendanceMap] = doc.data() as { [key: string]: AttendanceUser };
           });
           setAttendanceRequests(tempAttReqMap);
         });

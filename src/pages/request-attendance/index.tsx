@@ -46,12 +46,12 @@ const RequestAttendance = () => {
     return false;
   };
 
-  const checkCanRequest = (requests: AttendanceMap, user: UserType): boolean => {
-    console.log(requests);
+  const checkHasRequested = (requests: AttendanceMap, user: UserType): boolean => {
     const date = new Date().toLocaleDateString().replace(/\//g, '-');
+    const alreadyMarked = checkAlreadyMarked(user);
+    if (alreadyMarked) return true;
     if (requests[date]) {
-      const alreadyMarked = checkAlreadyMarked(user);
-      return Boolean(requests[date][user.uid]) || alreadyMarked;
+      return Boolean(requests[date][user.uid]);
     }
     return false;
   };
@@ -64,7 +64,7 @@ const RequestAttendance = () => {
   }, [user, users, attendanceRequests]);
 
   useEffect(() => {
-    if (userInfo && attendanceRequests && !checkCanRequest(attendanceRequests, userInfo)) {
+    if (userInfo && attendanceRequests && !checkHasRequested(attendanceRequests, userInfo)) {
       setCanRequest(true);
     } else {
       setCanRequest(false);
@@ -72,8 +72,9 @@ const RequestAttendance = () => {
   }, [userInfo, attendanceRequests]);
 
   const handleRequestAttendance = () => {
-    if (!userInfo || !attendanceRequests || checkCanRequest(attendanceRequests, userInfo)) return;
-    requestAttendance(userInfo);
+    if (!userInfo || !attendanceRequests || checkHasRequested(attendanceRequests, userInfo)) return;
+    const { history, ...info } = userInfo;
+    requestAttendance(info);
   };
 
   return (

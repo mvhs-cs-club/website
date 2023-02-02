@@ -28,6 +28,7 @@ import type { AnnouncementType } from 'src/types/announcement';
 import type { UserType } from 'types/user';
 import type { ProblemType } from 'types/problem';
 import { v4 } from 'uuid';
+import { AttendanceUser } from 'src/types/attendance';
 
 const config = {
   apiKey: 'AIzaSyDV-jaVv4Nfs-VJGw5AxUve0QonRfeZDLg',
@@ -293,16 +294,12 @@ export const updateChallengeCode = async (id: string, code: CodeType): Promise<v
   });
 };
 
-export const requestAttendance = async (user: UserType) => {
+export const requestAttendance = async (user: AttendanceUser) => {
   const dateString = new Date().toLocaleDateString().replace(/\//g, '-');
   const todaysRequest = await getDoc(doc(db, 'attendance_requests', dateString));
-  const data: { [key: string]: Partial<UserType> } = todaysRequest.data() || {};
+  const data: { [key: string]: AttendanceUser } = todaysRequest.data() || {};
   if (data[user.uid] === undefined) {
-    const { history, ...info } = user;
-    const req: Partial<UserType> = {
-      ...info
-    };
-    data[user.uid] = req;
+    data[user.uid] = user;
     setDoc(doc(db, 'attendance_requests', dateString), data);
   }
 };
@@ -313,5 +310,18 @@ export const removeAttendanceRequest = async (date: string, uid: string) => {
   if (!data) return;
   if (!data[uid]) return;
   delete data[uid];
-  setDoc(doc(db, 'attendance_requests', date), data);
+  if (Object.keys(data).length === 0) {
+    deleteDoc(doc(db, 'attendance_requests', date));
+  } else {
+    setDoc(doc(db, 'attendance_requests', date), data);
+  }
+};
+
+export const logAttendance = async (member: AttendanceUser, date: string) => {
+  const todaysLog = await getDoc(doc(db, 'attendance_log', date));
+  const data: { [key: string]: AttendanceUser } = todaysLog.data() || {};
+  if (data[member.uid] === undefined) {
+    data[member.uid] = member;
+    setDoc(doc(db, 'attendance_log', date), data);
+  }
 };
