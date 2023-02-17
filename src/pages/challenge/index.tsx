@@ -176,9 +176,8 @@ const Challenge = () => {
       if (devMode) {
         url = `http://localhost:${devPort}`;
       } else {
-        url = 'https://mvcs-club-api.onrender.com';
+        url = 'https://cs-api.mvhsinfosec.workers.dev';
       }
-      url = 'https://cs-api.mvhsinfosec.workers.dev';
       const res = await axios
         .post(`${url}/submit`, {
           code: code[language as keyof CodeType],
