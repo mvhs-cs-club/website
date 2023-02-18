@@ -166,7 +166,7 @@ const Challenge = () => {
   };
 
   const handleSubmitCode = async (): Promise<void> => {
-    const devPort = 3000;
+    const devPort = 8787; // cf workers dev port
 
     setAwaiting(true);
     setContractTests(true);
@@ -176,7 +176,7 @@ const Challenge = () => {
       if (devMode) {
         url = `http://localhost:${devPort}`;
       } else {
-        url = 'https://mvcs-club-api.onrender.com';
+        url = 'https://cs-api.mvhsinfosec.workers.dev';
       }
       const res = await axios
         .post(`${url}/submit`, {
