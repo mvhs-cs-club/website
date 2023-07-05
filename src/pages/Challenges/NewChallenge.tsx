@@ -28,13 +28,13 @@ import ExpandDown from 'keyframes/expand-down';
 
 // utils
 import { languages, boilerplates } from 'utils/languages';
-import { v4 } from 'uuid';
 import { utils } from 'utils/style-utils';
 import { extensions } from 'utils/languages';
 
 // types
 import type { ChallengeType, BoilerplateType } from 'types/challenge';
 import type { ErrorRuleType } from 'types/utils';
+import { uuid } from 'src/utils/utils';
 
 const InputWrapper = styled('div')({
   display: 'flex',
@@ -164,7 +164,7 @@ const NewChallenge = ({ onCancel, onCreate, defaults }: Props) => {
         description: desc,
         languages: selectedLanguages,
         boilerplate,
-        id: v4().replace(/-/g, ''),
+        id: uuid().replace(/-/g, ''),
         testCases: {
           inputs,
           outputs

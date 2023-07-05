@@ -27,8 +27,8 @@ import type { AdminType } from 'types/admin';
 import type { AnnouncementType } from 'src/types/announcement';
 import type { UserType } from 'types/user';
 import type { ProblemType } from 'types/problem';
-import { v4 } from 'uuid';
 import { AttendanceUser } from 'src/types/attendance';
+import { uuid } from './utils';
 
 const config = {
   apiKey: 'AIzaSyDV-jaVv4Nfs-VJGw5AxUve0QonRfeZDLg',
@@ -124,7 +124,7 @@ export const getRequests = async (): Promise<AdminType[]> => {
 };
 
 export const addAnnouncement = async (announcement: AnnouncementType): Promise<void> => {
-  const id = v4();
+  const id = uuid();
   announcement.id = id;
   setDoc(doc(db, 'announcements', id), announcement);
 };

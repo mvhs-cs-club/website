@@ -12,7 +12,6 @@ import { collection, onSnapshot } from 'firebase/firestore';
 
 // utils
 import { AdminContext, UserContext } from 'contexts/UserContext';
-import { v4 } from 'uuid';
 import { utils, classes } from 'utils/style-utils';
 
 // types
@@ -27,6 +26,7 @@ import ExpandDown from 'keyframes/expand-down';
 import FadeIn from 'keyframes/fade-in';
 import FadeOut from 'keyframes/fade-out';
 import ExpandUp from 'keyframes/expand-up';
+import { uuid } from 'src/utils/utils';
 
 const AnnouncementsWrapper = styled('div')({
   display: 'flex',
@@ -151,7 +151,7 @@ const Announcements = () => {
                     .map(
                       (announcement: AnnouncementType): React.ReactNode => (
                         <Announcement
-                          key={v4()}
+                          key={uuid()}
                           announcement={announcement}
                         />
                       )

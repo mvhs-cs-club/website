@@ -8,8 +8,8 @@ import { styled } from '@mui/material/styles';
 import { RouteType } from 'types/utils';
 
 // utils
-import { v4 } from 'uuid';
 import { utils } from 'utils/style-utils';
+import { uuid } from 'utils/utils';
 
 // route data
 import routes from './PageRoutes';
@@ -35,7 +35,7 @@ const Router = () => {
           <Route
             path={route.path}
             element={route.element}
-            key={v4()}
+            key={uuid()}
           />
         ))}
       </Routes>

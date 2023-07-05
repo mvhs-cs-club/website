@@ -9,7 +9,6 @@ import { Button, CircularProgress } from '@mui/material';
 import { addPoints } from 'utils/firebase';
 
 // utils
-import { v4 } from 'uuid';
 import { AdminContext, UsersContext, AdminIdsContext } from 'contexts/UserContext';
 
 // types
@@ -25,6 +24,7 @@ import ExpandDown from 'keyframes/expand-down';
 import FadeIn from 'keyframes/fade-in';
 import FullCenter from 'components/full-center';
 import PageWrapper from 'components/page-wrapper';
+import { uuid } from 'src/utils/utils';
 
 const AttendanceWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -89,7 +89,7 @@ const Attendance = () => {
                             .map((member: UserType) => (
                               <ProfileBox
                                 user={member}
-                                key={v4()}
+                                key={uuid()}
                               >
                                 <Button
                                   color="info"
